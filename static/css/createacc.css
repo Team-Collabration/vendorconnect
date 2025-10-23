@@ -1,0 +1,150 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+}
+
+/* Header */
+header {
+  background-color: #0f172a;
+  padding: 20px;
+  color: white;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  margin: 0;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-links li a {
+  color: white;
+  text-decoration: none;
+}
+
+/* Signup Page Layout */
+.signup-page {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.signup-page h2 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.signup-page p {
+  color: #555;
+  margin-bottom: 30px;
+}
+
+/* Form Container */
+.form-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* spacing between vendor and supplier forms */
+  flex-wrap: wrap;
+}
+
+/* Individual Forms */
+.signup-form {
+  width: 500px;
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  text-align: left;
+}
+
+.signup-form h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Labels & Inputs */
+.signup-form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.signup-form input[type="text"],
+.signup-form input[type="email"],
+.signup-form input[type="password"],
+.signup-form input[type="date"] {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Buttons */
+.signup-form button {
+  padding: 10px;
+  background-color: #4a6cf7;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.signup-form button:hover {
+  background-color: #2f55d4;
+}
+
+/* Divider */
+.divider {
+  text-align: center;
+  margin: 15px 0;
+  color: #888;
+}
+
+/* Google Signup Button */
+.google-signup {
+  background-color: white;
+  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #555;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.google-signup img {
+  width: 20px;
+  height: 20px;
+}
+
+.google-signup:hover {
+  background-color: #f0f0f0;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #0f172a;
+  color: #f1f5f9;
+  margin-top: 40px;
+}
