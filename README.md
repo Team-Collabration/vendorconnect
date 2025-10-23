@@ -47,8 +47,6 @@ India’s street food vendors struggle with:
 ## 🚀 Getting Started
 
 ### Clone the Repository
-```bash
-git clone https://github.com/asritha28007/vendorconnect.git
-cd vendorconnect
+
 
 
