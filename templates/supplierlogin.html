@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load static %}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="csrf-token" content="{{ csrf_token }}">
+<title>Supplier Login - VendorConnect</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background-color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+header {
+    background: rgba(15, 23, 42, 0.95);
+    padding: 20px 40px;
+    color: white;
+    backdrop-filter: blur(10px);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: white;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 35px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #81c784;
+}
+
+/* Login Container */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 60px 20px;
+}
+
+/* Login Box */
+.login-box {
+    background-color: #c8e6c9;
+    width: 100%;
+    max-width: 440px;
+    padding: 60px 50px;
+    border-radius: 30px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+
+.login-box:hover {
+    background-color: #66bb6a;
+    transform: translateY(-5px);
+}
+
+/* Decorative icon animation (truck + boxes) */
+.login-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    font-size: 65px;
+    margin-bottom: 20px;
+    animation: floatIcons 2.5s ease-in-out infinite;
+    position: relative;
+}
+
+.login-icon i.fa-truck {
+    color: #558b2f;
+    filter: drop-shadow(0 4px 8px rgba(85, 139, 47, 0.4));
+}
+
+.login-icon i.fa-boxes {
+    position: absolute;
+    font-size: 32px;
+    color: #7cb342;
+    bottom: -5px;
+    right: 30%;
+    filter: drop-shadow(0 2px 4px rgba(124, 179, 66, 0.3));
+}
+
+@keyframes floatIcons {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Titles */
+.login-box h2 {
+    margin-bottom: 15px;
+    margin-top: 10px;
+    color: #1b5e20;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.login-subtitle {
+    color: #2e7d32;
+    font-size: 14px;
+    margin-bottom: 40px;
+}
+
+/* Form */
+form {
+    text-align: left;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.input-group i {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #2e7d32;
+    font-size: 18px;
+}
+
+.login-box input[type="email"],
+.login-box input[type="password"] {
+    width: 100%;
+    padding: 16px 20px 16px 50px;
+    border: 2px solid #a5d6a7;
+    border-radius: 15px;
+    font-size: 15px;
+    background-color: #e8f5e9;
+}
+
+.login-box input[type="email"]:focus,
+.login-box input[type="password"]:focus {
+    outline: none;
+    border-color: #2e7d32;
+}
+
+/* Button */
+.login-box button {
+    width: 100%;
+    padding: 17px;
+    background-color: #6b8e23;
+    color: white;
+    font-size: 17px;
+    font-weight: 600;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.login-box button:hover {
+    background-color: #556b2f;
+}
+
+.login-box button:active {
+    background-color: #4a5f28;
+}
+
+/* Register Link */
+.register-link {
+    margin-top: 25px;
+    font-size: 15px;
+    color: #1b5e20;
+}
+
+.register-link a {
+    color: #2e7d32;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.register-link a:hover {
+    color: #1b5e20;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 25px;
+    background: rgba(15, 23, 42, 0.95);
+    color: #cbd5e1;
+    font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .login-box {
+        padding: 50px 35px;
+        border-radius: 25px;
+    }
+    .login-box h2 {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-box {
+        padding: 40px 25px;
+    }
+}
+</style>
+</head>
+<body>
+<header>
+<nav>
+<h1>VendorConnect</h1>
+<ul>
+<li><a href="{% url 'index' %}">Home</a></li>
+<li><a href="{% url 'about' %}">About</a></li>
+<li><a href="{% url 'contact' %}">Contact</a></li>
+</ul>
+</nav>
+</header>
+
+<div class="login-container">
+<section class="login-box">
+    <div class="login-icon">
+        <i class="fas fa-truck"></i>
+        <i class="fas fa-boxes"></i>
+    </div>
+    <h2>Supplier Login</h2>
+    <p class="login-subtitle">Welcome back! Please login to your account</p>
+    <form method="POST" action="{% url 'supplierlogin' %}">
+        {% csrf_token %}
+        <div class="input-group">
+            <input type="email" name="email" placeholder="Enter your email" required>
+            <i class="fas fa-envelope"></i>
+        </div>
+        <div class="input-group">
+            <input type="password" name="password" placeholder="Enter your password" required>
+            <i class="fas fa-lock"></i>
+        </div>
+        <button type="submit">Login <i class="fas fa-arrow-right"></i></button>
+        <p class="register-link">Don't have an account? <a href="{% url 'suppliersignup' %}">Sign Up</a></p>
+    </form>
+</section>
+</div>
+
+<footer>
+<p>©️ 2025 VendorConnect. All rights reserved.</p>
+</footer>
+</body>
+</html>

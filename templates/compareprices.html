@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compare Supplier Prices</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+ background: linear-gradient(135deg, beige 0%, rgb(225, 237, 246) 100%);
+  min-height: 100vh;
+  display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+  height: 100vh;
+  width: 260px;
+  background-color: #2c3e50;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0;
+  position: fixed;
+  box-shadow: 4px 0 15px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+
+.sidebar-header {
+  padding: 0 20px 30px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 20px;
+}
+
+.sidebar-header h2 {
+  color: #fff;
+  font-size: 1.4em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-header h2 i {
+  color: #3498db;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  padding: 15px 25px;
+  text-decoration: none;
+  color: #ecf0f1;
+  font-weight: 500;
+  margin: 5px 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.sidebar a i {
+  margin-right: 12px;
+  min-width: 20px;
+  text-align: center;
+  font-size: 1.1em;
+}
+
+.sidebar a:hover {
+  background-color: rgba(52, 152, 219, 0.2);
+  transform: translateX(5px);
+}
+
+.sidebar a.active {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  padding: 30px;
+}
+
+/* Header */
+header {
+  background: #fff;
+  color: #2c3e50;
+  padding: 25px 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 2em;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 0;
+}
+
+header h1 i {
+  color: #f39c12;
+}
+
+/* Container */
+.container {
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  padding: 30px;
+}
+
+/* Stats Section */
+.stats-section {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  flex: 1;
+  min-width: 200px;
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.stat-card h3 {
+  font-size: 2em;
+  margin-bottom: 5px;
+}
+
+.stat-card p {
+  opacity: 0.9;
+  font-size: 0.95em;
+}
+
+/* Search/Filter Section */
+.filter-section {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filter-section input,
+.filter-section select {
+  flex: 1;
+  min-width: 200px;
+  padding: 12px 18px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: "Poppins", sans-serif;
+  transition: all 0.3s ease;
+}
+
+.filter-section input:focus,
+.filter-section select:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.filter-section button {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: "Poppins", sans-serif;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.filter-section button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+
+/* Item Block */
+.item-block {
+  margin-bottom: 30px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.item-block:hover {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+.item-header {
+  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  color: white;
+  padding: 18px 25px;
+  font-weight: 600;
+  font-size: 1.3em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.item-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.item-header i {
+  font-size: 1.2em;
+}
+
+.price-comparison-badge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6px 15px;
+  border-radius: 20px;
+  font-size: 0.75em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(10px);
+}
+
+.price-diff {
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+th {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  color: white;
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.95em;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+th i {
+  margin-right: 8px;
+}
+
+td {
+  padding: 15px;
+  border-bottom: 1px solid #ecf0f1;
+  color: #2c3e50;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover {
+  background-color: #f8f9fa;
+}
+
+.price-cell {
+  font-weight: 600;
+  color: #27ae60;
+  font-size: 1.1em;
+}
+
+.best-price {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+}
+
+.best-price .price-cell {
+  color: #155724;
+  font-size: 1.3em;
+}
+
+.price-badge-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.best-badge {
+  background: #27ae60;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75em;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.savings-badge {
+  background: #e74c3c;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.7em;
+  font-weight: 600;
+}
+
+.location-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #e8f4f8;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.85em;
+  color: #2c3e50;
+}
+
+.location-badge i {
+  color: #3498db;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #7f8c8d;
+}
+
+.empty-state i {
+  font-size: 4em;
+  margin-bottom: 20px;
+  color: #bdc3c7;
+}
+
+.empty-state h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.empty-state p {
+  font-size: 1.1em;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.order-btn {
+  background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+}
+
+.order-btn:hover {
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 220px;
+  }
+  
+  .main-content {
+    margin-left: 220px;
+    width: calc(100% - 220px);
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 15px 0;
+  }
+  
+  .sidebar-header {
+    display: none;
+  }
+  
+  .sidebar a {
+    margin: 0 10px;
+    white-space: nowrap;
+  }
+  
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+    padding: 20px;
+  }
+  
+  header h1 {
+    font-size: 1.5em;
+  }
+  
+  .stats-section {
+    flex-direction: column;
+  }
+  
+  .filter-section {
+    flex-direction: column;
+  }
+  
+  .filter-section input,
+  .filter-section select,
+  .filter-section button {
+    width: 100%;
+  }
+  
+  table {
+    font-size: 0.9em;
+  }
+
+  .item-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3498db;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2980b9;
+}
+</style>
+</head>
+<body>
+
+<!-- Vertical Sidebar Navbar -->
+<div class="sidebar">
+  <div class="sidebar-header">
+    <h2><i class="fas fa-store"></i> Vendor Portal</h2>
+  </div>
+  <a href="{% url 'findsuppliers' %}" class="{% if request.resolver_match.url_name == 'findsuppliers' %}{% endif %}">
+    <i class="fas fa-search"></i> Find Suppliers
+  </a>
+  <a href="{% url 'compareprices' %}" class="{% if request.resolver_match.url_name == 'compareprices' %}active{% endif %}">
+    <i class="fas fa-balance-scale"></i> Compare Prices
+  </a>
+  <a href="{% url 'bulk' %}" class="{% if request.resolver_match.url_name == 'bulk' %}{% endif %}">
+    <i class="fas fa-boxes"></i> Bulk Orders
+  </a>
+  <a href="{% url 'leavereviews' %}" class="{% if request.resolver_match.url_name == 'leavereviews' %}{% endif %}">
+    <i class="fas fa-star"></i> Reviews
+  </a>
+   <a href="{% url 'orders' %}" class="nav-link"><i class="fas fa-clipboard-list"></i> My Orders</a>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+  <header>
+    <h1><i class="fas fa-balance-scale"></i> Compare Supplier Prices</h1>
+  </header>
+
+  <div class="container">
+    <!-- Stats Section -->
+    <div class="stats-section">
+      <div class="stat-card">
+        <h3 id="total-items">{{ grouped|length|default:0 }}</h3>
+        <p><i class="fas fa-box"></i> Product Categories</p>
+      </div>
+      <div class="stat-card" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%);">
+        <h3 id="total-suppliers">0</h3>
+        <p><i class="fas fa-users"></i> Total Suppliers</p>
+      </div>
+      <div class="stat-card" style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);">
+        <h3 id="avg-price">₹0</h3>
+        <p><i class="fas fa-chart-line"></i> Average Price</p>
+      </div>
+      <div class="stat-card" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);">
+        <h3 id="max-savings">₹0</h3>
+        <p><i class="fas fa-piggy-bank"></i> Max Savings</p>
+      </div>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-section">
+      <input type="text" id="searchItem" placeholder="🔍 Search by product name..." />
+      <select id="sortBy">
+        <option value="">Sort by...</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option>
+        <option value="name">Supplier Name A-Z</option>
+      </select>
+      <button onclick="applyFilters()">
+        <i class="fas fa-filter"></i> Apply Filters
+      </button>
+    </div>
+
+    <!-- Products Comparison -->
+    {% if grouped %}
+      {% for item, suppliers in grouped.items %}
+      <div class="item-block" data-item="{{ item|lower }}">
+        <div class="item-header">
+          <div class="item-header-left">
+            <i class="fas fa-leaf"></i>
+            <span>{{ item|title }}</span>
+          </div>
+          <div class="price-comparison-badge">
+            <i class="fas fa-chart-line"></i>
+            <span class="price-diff" data-item="{{ item|lower }}">Analyzing...</span>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th><i class="fas fa-store"></i> Supplier Name</th>
+              <th><i class="fas fa-tag"></i> Unit Price (₹)</th>
+              <th><i class="fas fa-chart-bar"></i> Comparison</th>
+              <th><i class="fas fa-map-marker-alt"></i> Location</th>
+              <th><i class="fas fa-tools"></i> Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in suppliers %}
+              <tr data-price="{{ s.price }}" 
+                  data-supplier="{{ s.name }}" 
+                  data-item="{{ item }}" 
+                  data-product-id="{{ s.product_id }}"
+                  data-stock="{{ s.stock }}"
+                  data-min-order="{{ s.minimum_order }}"
+                  data-unit="kg">
+                <td><strong>{{ s.name }}</strong></td>
+                <td>
+                  <div class="price-badge-container">
+                    <span class="price-cell">₹{{ s.price }}/kg</span>
+                  </div>
+                </td>
+                <td class="comparison-cell"></td>
+                <td>
+                  <span class="location-badge">
+                    <i class="fas fa-map-pin"></i>
+                    {{ s.lat|floatformat:4 }}, {{ s.lng|floatformat:4 }}
+                  </span>
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <button type="button" 
+                            class="action-btn order-btn" 
+                            onclick="openOrderModal(this)"
+                            data-product-id="{{ s.product_id }}"
+                            data-supplier="{{ s.name }}"
+                            data-item="{{ item }}"
+                            data-price="{{ s.price }}"
+                            data-stock="{{ s.stock }}"
+                            data-min-order="{{ s.minimum_order }}"
+                            data-unit="kg">
+                      <i class="fas fa-shopping-cart"></i> Order Now
+                    </button>
+                    <button class="action-btn" onclick="viewOnMap({{ s.lat }}, {{ s.lng }})">
+                      <i class="fas fa-map"></i> Map
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="empty-state">
+        <i class="fas fa-inbox"></i>
+        <h3>No Price Data Available</h3>
+        <p>Suppliers haven't listed their products yet. Check back later!</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+<script>
+// Calculate and display statistics
+document.addEventListener('DOMContentLoaded', function() {
+  calculateStats();
+  highlightBestPrices();
+  addPriceComparisons();
+});
+
+function calculateStats() {
+  const tables = document.querySelectorAll('.item-block table tbody tr');
+  const uniqueSuppliers = new Set();
+  let totalPrice = 0;
+  let priceCount = 0;
+  let maxSaving = 0;
+
+  document.querySelectorAll('.item-block').forEach(block => {
+    const rows = Array.from(block.querySelectorAll('tbody tr'));
+    if (rows.length < 2) return;
+
+    const prices = rows.map(r => parseFloat(r.dataset.price)).filter(p => !isNaN(p));
+    if (prices.length < 2) return;
+
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
+    const saving = maxPrice - minPrice;
+    
+    if (saving > maxSaving) {
+      maxSaving = saving;
+    }
+  });
+
+  tables.forEach(row => {
+    const supplierName = row.querySelector('td:first-child')?.textContent.trim();
+    const priceText = row.querySelector('.price-cell')?.textContent.replace('₹', '').split('/')[0].trim();
+    
+    if (supplierName) uniqueSuppliers.add(supplierName);
+    if (priceText) {
+      totalPrice += parseFloat(priceText);
+      priceCount++;
+    }
+  });
+
+  document.getElementById('total-suppliers').textContent = uniqueSuppliers.size;
+  document.getElementById('max-savings').textContent = `₹${maxSaving.toFixed(2)}`;
+  
+  if (priceCount > 0) {
+    const avgPrice = (totalPrice / priceCount).toFixed(2);
+    document.getElementById('avg-price').textContent = `₹${avgPrice}`;
+  }
+}
+
+function highlightBestPrices() {
+  document.querySelectorAll('.item-block').forEach(block => {
+    const rows = Array.from(block.querySelectorAll('tbody tr'));
+    if (rows.length === 0) return;
+
+    let minPrice = Infinity;
+    let minRow = null;
+
+    rows.forEach(row => {
+      const price = parseFloat(row.dataset.price);
+      if (price < minPrice) {
+        minPrice = price;
+        minRow = row;
+      }
+    });
+
+    if (minRow) {
+      minRow.classList.add('best-price');
+      const priceContainer = minRow.querySelector('.price-badge-container');
+      if (priceContainer && !priceContainer.querySelector('.best-badge')) {
+        const badge = document.createElement('span');
+        badge.className = 'best-badge';
+        badge.innerHTML = '<i class="fas fa-star"></i> Best Price';
+        priceContainer.appendChild(badge);
+      }
+    }
+  });
+}
+
+function addPriceComparisons() {
+  document.querySelectorAll('.item-block').forEach(block => {
+    const rows = Array.from(block.querySelectorAll('tbody tr'));
+    
+    if (rows.length < 2) {
+      const badge = block.querySelector('.price-diff');
+      if (badge) badge.textContent = '1 Supplier';
+      return;
+    }
+
+    const prices = rows.map(r => parseFloat(r.dataset.price)).filter(p => !isNaN(p));
+    if (prices.length < 2) return;
+
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
+    const priceDiff = maxPrice - minPrice;
+    const percentDiff = ((priceDiff / maxPrice) * 100).toFixed(1);
+
+    const badge = block.querySelector('.price-diff');
+    if (badge) {
+      badge.textContent = `Save up to ₹${priceDiff.toFixed(2)}/unit (${percentDiff}%)`;
+    }
+
+    rows.forEach(row => {
+      const price = parseFloat(row.dataset.price);
+      const comparisonCell = row.querySelector('.comparison-cell');
+      
+      if (!comparisonCell) return;
+
+      if (price === minPrice) {
+        comparisonCell.innerHTML = '<span class="best-badge"><i class="fas fa-trophy"></i> Lowest Price</span>';
+      } else {
+        const diff = price - minPrice;
+        const percentMore = ((diff / minPrice) * 100).toFixed(1);
+        comparisonCell.innerHTML = `<span class="savings-badge">+₹${diff.toFixed(2)} (${percentMore}% more)</span>`;
+      }
+    });
+  });
+}
+
+function applyFilters() {
+  const searchTerm = document.getElementById('searchItem').value.toLowerCase();
+  const sortBy = document.getElementById('sortBy').value;
+
+  document.querySelectorAll('.item-block').forEach(block => {
+    const itemName = block.dataset.item;
+    if (searchTerm === '' || itemName.includes(searchTerm)) {
+      block.style.display = 'block';
+    } else {
+      block.style.display = 'none';
+    }
+  });
+
+  if (sortBy) {
+    document.querySelectorAll('.item-block:not([style*="display: none"]) tbody').forEach(tbody => {
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+      
+      rows.sort((a, b) => {
+        if (sortBy === 'price-low') {
+          return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+        } else if (sortBy === 'price-high') {
+          return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+        } else if (sortBy === 'name') {
+          const nameA = a.querySelector('td:first-child').textContent;
+          const nameB = b.querySelector('td:first-child').textContent;
+          return nameA.localeCompare(nameB);
+        }
+        return 0;
+      });
+
+      rows.forEach(row => tbody.appendChild(row));
+    });
+
+    document.querySelectorAll('.best-price').forEach(row => row.classList.remove('best-price'));
+    document.querySelectorAll('.best-badge').forEach(badge => badge.remove());
+    highlightBestPrices();
+    addPriceComparisons();
+  }
+}
+
+// Open order modal
+// Open order modal
+function openOrderModal(button) {
+  console.log('openOrderModal called'); // Debug
+  
+  // Get data from button attributes
+  const productId = button.getAttribute('data-product-id');
+  const supplierName = button.getAttribute('data-supplier');
+  const itemName = button.getAttribute('data-item');
+  const price = parseFloat(button.getAttribute('data-price'));
+  const stock = parseFloat(button.getAttribute('data-stock') || 0);
+  const minOrder = parseFloat(button.getAttribute('data-min-order') || 1);
+  const unit = button.getAttribute('data-unit') || 'kg';
+  
+  console.log('Order data:', { productId, supplierName, itemName, price, stock, minOrder, unit }); // Debug
+  
+  // Fill modal with data
+  document.getElementById('order_supplier_product_id').value = productId;
+  document.getElementById('order_unit_price').value = price;
+  document.getElementById('order_product_name').textContent = itemName;
+  document.getElementById('order_supplier_name').textContent = supplierName;
+  document.getElementById('order_price').textContent = price.toFixed(2);
+  document.getElementById('order_stock').textContent = stock.toFixed(2);
+  document.getElementById('order_min').textContent = minOrder.toFixed(2);
+  document.getElementById('order_min2').textContent = minOrder.toFixed(2) + ' ' + unit;
+  
+  // Set all unit displays
+  document.querySelectorAll('#order_unit, #order_unit2, #order_unit3, #order_unit4').forEach(el => {
+    el.textContent = unit;
+  });
+  
+  // Set minimum quantity
+  const quantityInput = document.getElementById('order_quantity');
+  quantityInput.min = minOrder;
+  quantityInput.value = minOrder;
+  
+  // Set minimum date to today
+  const today = new Date().toISOString().split('T')[0];
+  const deliveryDateInput = document.getElementById('order_delivery_date');
+  if (deliveryDateInput) {
+    deliveryDateInput.min = today;
+  }
+  
+  // Calculate initial total
+  updateOrderTotal();
+  
+  // Show modal
+  const modal = document.getElementById('orderModal');
+  modal.style.display = 'block';
+  
+  console.log('Modal opened'); // Debug
+}
+// Close order modal
+function closeOrderModal() {
+  document.getElementById('orderModal').style.display = 'none';
+  document.getElementById('orderForm').reset();
+}
+
+// Update total price when quantity changes
+document.addEventListener('DOMContentLoaded', function() {
+  const quantityInput = document.getElementById('order_quantity');
+  if (quantityInput) {
+    quantityInput.addEventListener('input', updateOrderTotal);
+  }
+});
+
+function updateOrderTotal() {
+  const quantity = parseFloat(document.getElementById('order_quantity').value) || 0;
+  const unitPrice = parseFloat(document.getElementById('order_unit_price').value) || 0;
+  const total = quantity * unitPrice;
+  document.getElementById('order_total_price').textContent = total.toFixed(2);
+}
+
+// Handle order form submission
+document.addEventListener('DOMContentLoaded', function() {
+  const orderForm = document.getElementById('orderForm');
+  if (orderForm) {
+    orderForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById('submitOrderBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+      
+      const supplierProductId = document.getElementById('order_supplier_product_id').value;
+      const quantity = parseFloat(document.getElementById('order_quantity').value);
+      const address = document.getElementById('order_address').value.trim();
+      const phone = document.getElementById('order_phone').value.trim();
+      const deliveryDate = document.getElementById('order_delivery_date').value;
+      const notes = document.getElementById('order_notes').value.trim();
+      const minOrder = parseFloat(document.getElementById('order_min').textContent);
+      
+      // Validation
+      if (quantity < minOrder) {
+        alert(`Minimum order quantity is ${minOrder}`);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-check"></i> Confirm Order';
+        return;
+      }
+      
+      if (!address || !phone) {
+        alert('Please fill in all required fields');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-check"></i> Confirm Order';
+        return;
+      }
+      
+      try {
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || getCookie('csrftoken');
+        
+        const response = await fetch('/api/create/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+          },
+          body: JSON.stringify({
+            supplier_product_id: supplierProductId,
+            quantity: quantity,
+            delivery_address: address,
+            phone: phone,
+            expected_delivery_date: deliveryDate,
+            notes: notes
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          alert(
+            `✅ Order Placed Successfully!\n\n` +
+            `Order ID: #${data.order.id}\n` +
+            `Product: ${data.order.product_name}\n` +
+            `Supplier: ${data.order.supplier_name}\n` +
+            `Quantity: ${data.order.quantity} ${data.order.unit}\n` +
+            `Total: ₹${data.order.total_price}\n` +
+            `Status: ${data.order.status}\n\n` +
+            `The supplier will review your order shortly.`
+          );
+          closeOrderModal();
+          
+          // Optionally redirect to orders page
+          // window.location.href = '/vendor/orders/';
+        } else {
+          alert(`❌ Order Failed:\n${data.error}`);
+        }
+      } catch (error) {
+        console.error('Order error:', error);
+        alert('Failed to place order. Please try again.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-check"></i> Confirm Order';
+      }
+    });
+  }
+});
+
+// Helper function to get CSRF token
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+function viewOnMap(lat, lng) {
+  const mapUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+  window.open(mapUrl, '_blank');
+}
+
+// Real-time search
+document.getElementById('searchItem')?.addEventListener('input', function() {
+  const searchTerm = this.value.toLowerCase();
+  document.querySelectorAll('.item-block').forEach(block => {
+    const itemName = block.dataset.item;
+    block.style.display = itemName.includes(searchTerm) ? 'block' : 'none';
+  });
+});
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+  const modal = document.getElementById('orderModal');
+  if (event.target == modal) {
+    closeOrderModal();
+  }
+}
+</script>
+<!-- Order Modal -->
+<!-- Order Modal - Add this BEFORE </body> -->
+<div id="orderModal" class="modal" style="display: none;">
+  <div class="modal-content" style="max-width: 600px;">
+    <div class="modal-header">
+      <h2><i class="fas fa-shopping-cart"></i> Place Order</h2>
+      <span class="close" onclick="closeOrderModal()">&times;</span>
+    </div>
+    <div class="modal-body">
+      <form id="orderForm">
+        <input type="hidden" id="order_supplier_product_id">
+        <input type="hidden" id="order_unit_price">
+        
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+          <h3 style="margin: 0 0 10px 0; color: #2c3e50;">Order Details</h3>
+          <p style="margin: 5px 0;"><strong>Product:</strong> <span id="order_product_name"></span></p>
+          <p style="margin: 5px 0;"><strong>Supplier:</strong> <span id="order_supplier_name"></span></p>
+          <p style="margin: 5px 0;"><strong>Unit Price:</strong> ₹<span id="order_price"></span>/<span id="order_unit"></span></p>
+          <p style="margin: 5px 0;"><strong>Available Stock:</strong> <span id="order_stock"></span> <span id="order_unit2"></span></p>
+          <p style="margin: 5px 0;"><strong>Minimum Order:</strong> <span id="order_min"></span> <span id="order_unit3"></span></p>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: 600;">
+            <i class="fas fa-box"></i> Quantity (<span id="order_unit4"></span>):*
+          </label>
+          <input type="number" id="order_quantity" step="0.01" min="0.01" required
+                 style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px;"
+                 placeholder="Enter quantity">
+          <small style="color: #666;">Minimum order: <span id="order_min2"></span></small>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: 600;">
+            <i class="fas fa-map-marker-alt"></i> Delivery Address:*
+          </label>
+          <textarea id="order_address" rows="3" required
+                    style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px;"
+                    placeholder="Enter complete delivery address"></textarea>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: 600;">
+            <i class="fas fa-phone"></i> Contact Phone:*
+          </label>
+          <input type="tel" id="order_phone" required
+                 style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px;"
+                 placeholder="Enter contact number">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: 600;">
+            <i class="fas fa-calendar"></i> Expected Delivery Date:
+          </label>
+          <input type="date" id="order_delivery_date"
+                 style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px;">
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: 600;">
+            <i class="fas fa-comment"></i> Additional Notes:
+          </label>
+          <textarea id="order_notes" rows="2"
+                    style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px;"
+                    placeholder="Any special instructions or requirements"></textarea>
+        </div>
+
+        <div style="background: #e8f4f8; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+          <h3 style="margin: 0 0 10px 0; color: #2c3e50;">Order Summary</h3>
+          <p style="margin: 5px 0; font-size: 18px;">
+            <strong>Total Amount: ₹<span id="order_total_price">0.00</span></strong>
+          </p>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <button type="button" onclick="closeOrderModal()" 
+                  style="flex: 1; padding: 12px; background: #95a5a6; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer;">
+            Cancel
+          </button>
+          <button type="submit" id="submitOrderBtn"
+                  style="flex: 2; padding: 12px; background: linear-gradient(135deg, #27ae60 0%, #229954 100%); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer;">
+            <i class="fas fa-check"></i> Confirm Order
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+.modal {
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  overflow-y: auto;
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 3% auto;
+  border-radius: 15px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  padding: 20px 25px;
+  border-radius: 15px 15px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+.modal-header .close {
+  color: white;
+  font-size: 32px;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+  transition: transform 0.2s;
+}
+
+.modal-header .close:hover {
+  transform: rotate(90deg);
+}
+
+.modal-body {
+  padding: 25px;
+}
+</style>
+</body>
+</html>

@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Orders - Supplier Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+  height: 100vh;
+  width: 260px;
+  background-color: #2c3e50;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0;
+  position: fixed;
+  box-shadow: 4px 0 15px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+
+.sidebar-header {
+  padding: 0 20px 30px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 20px;
+}
+
+.sidebar-header h2 {
+  color: #fff;
+  font-size: 1.4em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  padding: 15px 25px;
+  text-decoration: none;
+  color: #ecf0f1;
+  font-weight: 500;
+  margin: 5px 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.sidebar a i {
+  margin-right: 12px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.sidebar a:hover {
+  background-color: rgba(52, 152, 219, 0.2);
+  transform: translateX(5px);
+}
+
+.sidebar a.active {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  padding: 30px;
+}
+
+header {
+  background: #fff;
+  color: #2c3e50;
+  padding: 25px 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 2em;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 0;
+}
+
+.container {
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  padding: 30px;
+}
+
+/* Stats */
+.stats-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.stat-card.pending { background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); }
+.stat-card.confirmed { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
+.stat-card.shipped { background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); }
+.stat-card.delivered { background: linear-gradient(135deg, #27ae60 0%, #229954 100%); }
+
+.stat-card h3 {
+  font-size: 2.5em;
+  margin-bottom: 5px;
+}
+
+.stat-card p {
+  opacity: 0.9;
+  font-size: 0.95em;
+}
+
+/* Filters */
+.filter-section {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filter-section select, .filter-section input {
+  flex: 1;
+  min-width: 200px;
+  padding: 12px 18px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Orders Table */
+.orders-table {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+th {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  color: white;
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9em;
+  text-transform: uppercase;
+}
+
+td {
+  padding: 15px;
+  border-bottom: 1px solid #ecf0f1;
+  color: #2c3e50;
+}
+
+tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Status Badge */
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-pending { background: #fff3cd; color: #856404; }
+.status-confirmed { background: #d1ecf1; color: #0c5460; }
+.status-processing { background: #cce5ff; color: #004085; }
+.status-shipped { background: #e2d5f3; color: #5a2a7a; }
+.status-delivered { background: #d4edda; color: #155724; }
+.status-cancelled { background: #f8d7da; color: #721c24; }
+
+/* Action Buttons */
+.action-btn {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85em;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 2px;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.action-btn.view { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
+.action-btn.confirm { background: linear-gradient(135deg, #27ae60 0%, #229954 100%); }
+.action-btn.ship { background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); }
+.action-btn.cancel { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
+
+/* Loading State */
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+  color: #7f8c8d;
+}
+
+.loading i {
+  font-size: 3em;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #7f8c8d;
+}
+
+.empty-state i {
+  font-size: 4em;
+  margin-bottom: 20px;
+  color: #bdc3c7;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  overflow-y: auto;
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 3% auto;
+  max-width: 700px;
+  border-radius: 15px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  padding: 20px 25px;
+  border-radius: 15px 15px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+.close {
+  color: white;
+  font-size: 32px;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.close:hover {
+  transform: rotate(90deg);
+}
+
+.modal-body {
+  padding: 25px;
+}
+
+.detail-row {
+  display: flex;
+  padding: 12px 0;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.detail-label {
+  font-weight: 600;
+  width: 200px;
+  color: #2c3e50;
+}
+
+.detail-value {
+  flex: 1;
+  color: #555;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+    padding: 20px;
+  }
+  
+  .stats-section {
+    grid-template-columns: 1fr;
+  }
+  
+  .filter-section {
+    flex-direction: column;
+  }
+  
+  .filter-section select, .filter-section input {
+    width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <h2><i class="fas fa-store"></i> Supplier Portal</h2>
+  </div>
+  <a href="{% url 'listproducts' %}"><i class="fas fa-box"></i> List Products</a>
+  <a href="{% url 'manageorders' %}" class="active"><i class="fas fa-shopping-cart"></i> Manage Orders</a>
+  <a href="{% url 'analytics' %}"><i class="fas fa-chart-bar"></i> Analytics</a>
+  <a href="{% url 'support' %}"><i class="fas fa-cog"></i> Support and Help</a>
+</div>
+
+<div class="main-content">
+  <header>
+    <h1><i class="fas fa-shopping-cart"></i> Manage Orders</h1>
+  </header>
+
+  <div class="container">
+    <!-- Stats -->
+    <div class="stats-section">
+      <div class="stat-card pending">
+        <h3 id="stat-pending">0</h3>
+        <p><i class="fas fa-clock"></i> Pending Orders</p>
+      </div>
+      <div class="stat-card confirmed">
+        <h3 id="stat-confirmed">0</h3>
+        <p><i class="fas fa-check-circle"></i> Confirmed</p>
+      </div>
+      <div class="stat-card shipped">
+        <h3 id="stat-shipped">0</h3>
+        <p><i class="fas fa-shipping-fast"></i> Shipped</p>
+      </div>
+      <div class="stat-card delivered">
+        <h3 id="stat-delivered">0</h3>
+        <p><i class="fas fa-box-open"></i> Delivered</p>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-section">
+      <input type="text" id="searchOrder" placeholder="🔍 Search by Order ID, Vendor, Product...">
+      <select id="filterStatus">
+        <option value="">All Status</option>
+        <option value="pending">Pending</option>
+        <option value="confirmed">Confirmed</option>
+        <option value="processing">Processing</option>
+        <option value="shipped">Shipped</option>
+        <option value="delivered">Delivered</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+      <select id="sortBy">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+        <option value="amount-high">Amount: High to Low</option>
+        <option value="amount-low">Amount: Low to High</option>
+      </select>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="orders-table">
+      <div id="loadingState" class="loading">
+        <i class="fas fa-spinner"></i>
+        <p>Loading orders...</p>
+      </div>
+      
+      <div id="ordersContent" style="display: none;">
+        <table id="ordersTable">
+          <thead>
+            <tr>
+              <th><i class="fas fa-hashtag"></i> Order ID</th>
+              <th><i class="fas fa-user"></i> Vendor</th>
+              <th><i class="fas fa-box"></i> Product</th>
+              <th><i class="fas fa-cubes"></i> Quantity</th>
+              <th><i class="fas fa-rupee-sign"></i> Total</th>
+              <th><i class="fas fa-info-circle"></i> Status</th>
+              <th><i class="fas fa-calendar"></i> Date</th>
+              <th><i class="fas fa-tools"></i> Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTableBody">
+          </tbody>
+        </table>
+      </div>
+
+      <div id="emptyState" class="empty-state" style="display: none;">
+        <i class="fas fa-inbox"></i>
+        <h3>No Orders Yet</h3>
+        <p>Orders from vendors will appear here</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Order Details Modal -->
+<div id="orderModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2><i class="fas fa-file-invoice"></i> Order Details</h2>
+      <span class="close" onclick="closeModal()">&times;</span>
+    </div>
+    <div class="modal-body" id="orderDetailsBody">
+      <!-- Details will be populated by JavaScript -->
+    </div>
+  </div>
+</div>
+
+<script>
+let allOrders = [];
+
+// Load orders on page load
+document.addEventListener('DOMContentLoaded', function() {
+  loadOrders();
+  
+  // Add event listeners for filters
+  document.getElementById('searchOrder').addEventListener('input', applyFilters);
+  document.getElementById('filterStatus').addEventListener('change', applyFilters);
+  document.getElementById('sortBy').addEventListener('change', applyFilters);
+});
+
+async function loadOrders() {
+  try {
+    const response = await fetch('/supplier/orders/', {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      allOrders = data.orders;
+      updateStats();
+      displayOrders(allOrders);
+    } else {
+      showError('Failed to load orders');
+    }
+  } catch (error) {
+    console.error('Error loading orders:', error);
+    showError('Error loading orders');
+  }
+}
+
+function updateStats() {
+  const stats = {
+    pending: 0,
+    confirmed: 0,
+    shipped: 0,
+    delivered: 0
+  };
+  
+  allOrders.forEach(order => {
+    if (stats.hasOwnProperty(order.status)) {
+      stats[order.status]++;
+    }
+  });
+  
+  document.getElementById('stat-pending').textContent = stats.pending;
+  document.getElementById('stat-confirmed').textContent = stats.confirmed;
+  document.getElementById('stat-shipped').textContent = stats.shipped;
+  document.getElementById('stat-delivered').textContent = stats.delivered;
+}
+
+function displayOrders(orders) {
+  const tbody = document.getElementById('ordersTableBody');
+  const loadingState = document.getElementById('loadingState');
+  const ordersContent = document.getElementById('ordersContent');
+  const emptyState = document.getElementById('emptyState');
+  
+  loadingState.style.display = 'none';
+  
+  if (orders.length === 0) {
+    ordersContent.style.display = 'none';
+    emptyState.style.display = 'block';
+    return;
+  }
+  
+  ordersContent.style.display = 'block';
+  emptyState.style.display = 'none';
+  
+  tbody.innerHTML = orders.map(order => `
+    <tr>
+      <td><strong>#${order.id}</strong></td>
+      <td>
+        ${order.vendor_name}<br>
+        <small style="color: #7f8c8d;">${order.vendor_email}</small>
+      </td>
+      <td>${order.product_name}</td>
+      <td>${order.quantity} ${order.unit}</td>
+      <td><strong>₹${order.total_price.toFixed(2)}</strong></td>
+      <td><span class="status-badge status-${order.status}">${order.status}</span></td>
+      <td>${new Date(order.created_at).toLocaleDateString()}</td>
+      <td>
+        <button class="action-btn view" onclick="viewOrderDetails(${order.id})">
+          <i class="fas fa-eye"></i> View
+        </button>
+        ${order.status === 'pending' ? `
+          <button class="action-btn confirm" onclick="updateStatus(${order.id}, 'confirmed')">
+            <i class="fas fa-check"></i> Confirm
+          </button>
+        ` : ''}
+        ${order.status === 'confirmed' ? `
+          <button class="action-btn ship" onclick="updateStatus(${order.id}, 'shipped')">
+            <i class="fas fa-shipping-fast"></i> Ship
+          </button>
+        ` : ''}
+        ${order.status === 'shipped' ? `
+          <button class="action-btn confirm" onclick="updateStatus(${order.id}, 'delivered')">
+            <i class="fas fa-box-open"></i> Delivered
+          </button>
+        ` : ''}
+        ${['pending', 'confirmed'].includes(order.status) ? `
+          <button class="action-btn cancel" onclick="updateStatus(${order.id}, 'cancelled')">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+        ` : ''}
+      </td>
+    </tr>
+  `).join('');
+}
+
+function applyFilters() {
+  const searchTerm = document.getElementById('searchOrder').value.toLowerCase();
+  const statusFilter = document.getElementById('filterStatus').value;
+  const sortBy = document.getElementById('sortBy').value;
+  
+  let filtered = [...allOrders];
+  
+  // Search filter
+  if (searchTerm) {
+    filtered = filtered.filter(order => 
+      order.id.toString().includes(searchTerm) ||
+      order.vendor_name.toLowerCase().includes(searchTerm) ||
+      order.product_name.toLowerCase().includes(searchTerm)
+    );
+  }
+  
+  // Status filter
+  if (statusFilter) {
+    filtered = filtered.filter(order => order.status === statusFilter);
+  }
+  
+  // Sort
+  filtered.sort((a, b) => {
+    switch(sortBy) {
+      case 'newest':
+        return new Date(b.created_at) - new Date(a.created_at);
+      case 'oldest':
+        return new Date(a.created_at) - new Date(b.created_at);
+      case 'amount-high':
+        return b.total_price - a.total_price;
+      case 'amount-low':
+        return a.total_price - b.total_price;
+      default:
+        return 0;
+    }
+  });
+  
+  displayOrders(filtered);
+}
+
+async function updateStatus(orderId, newStatus) {
+  const confirmMsg = {
+    'confirmed': 'Are you sure you want to confirm this order?',
+    'shipped': 'Mark this order as shipped?',
+    'delivered': 'Confirm that this order has been delivered?',
+    'cancelled': 'Are you sure you want to cancel this order?'
+  };
+  
+  if (!confirm(confirmMsg[newStatus])) return;
+  
+  try {
+    const csrftoken = getCookie('csrftoken');
+    
+    const response = await fetch(`/supplier/orders/${orderId}/update-status/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken
+      },
+      body: JSON.stringify({ status: newStatus })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      alert(`✅ Order status updated to ${newStatus}`);
+      loadOrders(); // Reload orders
+    } else {
+      alert(`❌ Failed to update: ${data.error}`);
+    }
+  } catch (error) {
+    console.error('Error updating status:', error);
+    alert('Failed to update order status');
+  }
+}
+
+function viewOrderDetails(orderId) {
+  const order = allOrders.find(o => o.id === orderId);
+  if (!order) return;
+  
+  const detailsHTML = `
+    <div class="detail-row">
+      <div class="detail-label">Order ID:</div>
+      <div class="detail-value"><strong>#${order.id}</strong></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Vendor Name:</div>
+      <div class="detail-value">${order.vendor_name}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Vendor Email:</div>
+      <div class="detail-value">${order.vendor_email}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Contact Phone:</div>
+      <div class="detail-value">${order.phone || 'N/A'}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Product:</div>
+      <div class="detail-value">${order.product_name}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Quantity:</div>
+      <div class="detail-value">${order.quantity} ${order.unit}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Unit Price:</div>
+      <div class="detail-value">₹${order.unit_price.toFixed(2)}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Total Price:</div>
+      <div class="detail-value"><strong>₹${order.total_price.toFixed(2)}</strong></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Status:</div>
+      <div class="detail-value"><span class="status-badge status-${order.status}">${order.status}</span></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Delivery Address:</div>
+      <div class="detail-value">${order.delivery_address || 'N/A'}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Expected Delivery:</div>
+      <div class="detail-value">${order.expected_delivery_date ? new Date(order.expected_delivery_date).toLocaleDateString() : 'N/A'}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Order Date:</div>
+      <div class="detail-value">${new Date(order.created_at).toLocaleString()}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Last Updated:</div>
+      <div class="detail-value">${new Date(order.updated_at).toLocaleString()}</div>
+    </div>
+    ${order.notes ? `
+    <div class="detail-row">
+      <div class="detail-label">Notes:</div>
+      <div class="detail-value">${order.notes}</div>
+    </div>
+    ` : ''}
+  `;
+  
+  document.getElementById('orderDetailsBody').innerHTML = detailsHTML;
+  document.getElementById('orderModal').style.display = 'block';
+}
+
+function closeModal() {
+  document.getElementById('orderModal').style.display = 'none';
+}
+
+function showError(message) {
+  document.getElementById('loadingState').innerHTML = `
+    <i class="fas fa-exclamation-circle" style="color: #e74c3c;"></i>
+    <p>${message}</p>
+  `;
+}
+
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+  const modal = document.getElementById('orderModal');
+  if (event.target == modal) {
+    closeModal();
+  }
+}
+</script>
+
+</body>
+</html>

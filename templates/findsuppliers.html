@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Find Suppliers - Vendor Portal</title>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, beige 0%, rgb(225, 237, 246) 100%);
+  min-height: 100vh;
+  display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+  height: 100vh;
+  width: 260px;
+  background-color: #2c3e50;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0;
+  position: fixed;
+  box-shadow: 4px 0 15px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+
+.sidebar-header {
+  padding: 0 20px 30px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 20px;
+}
+
+.sidebar-header h2 {
+  color: #fff;
+  font-size: 1.4em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-header h2 i {
+  color: #3498db;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  padding: 15px 25px;
+  text-decoration: none;
+  color: #ecf0f1;
+  font-weight: 500;
+  margin: 5px 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.sidebar a i {
+  margin-right: 12px;
+  min-width: 20px;
+  text-align: center;
+  font-size: 1.1em;
+}
+
+.sidebar a:hover {
+  background-color: rgba(52, 152, 219, 0.2);
+  transform: translateX(5px);
+}
+
+.sidebar a.active {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  padding: 30px;
+}
+
+/* Header */
+header {
+  background: #fff;
+  color: #2c3e50;
+  padding: 25px 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 2em;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+header h1 i {
+  color: #3498db;
+}
+
+/* Search Container */
+.search-container {
+  background: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.search-container h2 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.5em;
+}
+
+.search-form {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.search-form input {
+  flex: 1;
+  min-width: 250px;
+  padding: 14px 20px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 16px;
+  font-family: "Poppins", sans-serif;
+  transition: all 0.3s ease;
+}
+
+.search-form input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.search-form button {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  border: none;
+  padding: 14px 25px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: "Poppins", sans-serif;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.search-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+
+.search-form button:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.search-form button i {
+  font-size: 1.1em;
+}
+
+#btnAll {
+  background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+  box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+}
+
+#btnAll:hover {
+  box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+}
+
+/* Status Message */
+#status {
+  margin-top: 15px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  background: #e8f4f8;
+  color: #2c3e50;
+  border-left: 4px solid #3498db;
+  display: inline-block;
+}
+
+/* Map Container */
+.map-wrapper {
+  background: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.map-wrapper h3 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#map {
+  height: 550px;
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Compare/Results Table */
+#compare {
+  background: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+#compare h3 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 1.5em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#compare table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+#compare th {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  color: white;
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.95em;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+#compare td {
+  padding: 15px;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+#compare tr:hover {
+  background-color: #f8f9fa;
+}
+
+#compare tr:last-child td {
+  border-bottom: none;
+}
+
+.view-products-btn {
+  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.view-products-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+}
+
+/* Products Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 3% auto;
+  padding: 0;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 900px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  animation: slideDown 0.3s ease;
+  max-height: 85vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  padding: 25px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.close {
+  color: white;
+  font-size: 32px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  line-height: 1;
+}
+
+.close:hover {
+  transform: rotate(90deg);
+}
+
+.modal-body {
+  padding: 30px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.product-card {
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+}
+
+.product-card:hover {
+  border-color: #3498db;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+  transform: translateY(-3px);
+}
+
+.product-card h4 {
+  color: #2c3e50;
+  margin-bottom: 12px;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.product-card h4 i {
+  color: #27ae60;
+}
+
+.product-info {
+  color: #555;
+  line-height: 1.8;
+}
+
+.product-info p {
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.product-info i {
+  width: 20px;
+  color: #3498db;
+}
+
+.price-tag {
+  background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.1em;
+  margin-top: 12px;
+  display: inline-block;
+}
+
+.no-products {
+  text-align: center;
+  padding: 40px;
+  color: #7f8c8d;
+}
+
+.no-products i {
+  font-size: 3em;
+  margin-bottom: 15px;
+  color: #bdc3c7;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 220px;
+  }
+  
+  .main-content {
+    margin-left: 220px;
+    width: calc(100% - 220px);
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 15px 0;
+  }
+  
+  .sidebar-header {
+    display: none;
+  }
+  
+  .sidebar a {
+    margin: 0 10px;
+    white-space: nowrap;
+  }
+  
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+    padding: 20px;
+  }
+  
+  .search-form {
+    flex-direction: column;
+  }
+  
+  .search-form input,
+  .search-form button {
+    width: 100%;
+  }
+  
+  #map {
+    height: 400px;
+  }
+  
+  header h1 {
+    font-size: 1.5em;
+  }
+
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-content {
+    width: 95%;
+    margin: 5% auto;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3498db;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2980b9;
+}
+
+/* Leaflet Popup Custom Styling */
+.leaflet-popup-content-wrapper {
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.leaflet-popup-content {
+  font-family: "Poppins", sans-serif;
+  margin: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Vertical Sidebar Navbar -->
+<div class="sidebar">
+  <div class="sidebar-header">
+    <h2><i class="fas fa-store"></i> Vendor Portal</h2>
+  </div>
+  <a href="{% url 'findsuppliers' %}" class="{% if request.resolver_match.url_name == 'findsuppliers' %}active{% endif %}">
+    <i class="fas fa-search"></i> Find Suppliers
+  </a>
+  <a href="{% url 'compareprices' %}" class="{% if request.resolver_match.url_name == 'compareprices' %}{% endif %}">
+    <i class="fas fa-balance-scale"></i> Compare Prices
+  </a>
+  <a href="{% url 'bulk' %}" class="{% if request.resolver_match.url_name == 'bulk' %}{% endif %}">
+    <i class="fas fa-boxes"></i> Bulk Orders
+  </a>
+  <a href="{% url 'leavereviews' %}" class="{% if request.resolver_match.url_name == 'leavereviews' %}{% endif %}">
+    <i class="fas fa-star"></i> Reviews
+  </a>
+   <a href="{% url 'orders' %}" class="nav-link"><i class="fas fa-clipboard-list"></i> My Orders</a>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+  <header>
+    <h1><i class="fas fa-handshake"></i> Find Suppliers</h1>
+  </header>
+
+  <!-- Search Container -->
+  <div class="search-container">
+    <h2><i class="fas fa-shopping-cart"></i> Search for Suppliers</h2>
+    <div class="search-form">
+      <input id="requirement" placeholder="Enter requirement (e.g. potatoes, tomatoes, milk...)">
+      <button id="btnFind">
+        <i class="fas fa-search"></i> Find Nearby
+      </button>
+      <button id="btnAll">
+        <i class="fas fa-map-marked-alt"></i> Show All Suppliers
+      </button>
+    </div>
+    <p id="status"></p>
+  </div>
+
+  <!-- Map Container -->
+  <div class="map-wrapper">
+    <h3><i class="fas fa-map"></i> Supplier Locations</h3>
+    <div id="map"></div>
+  </div>
+
+  <!-- Results Table -->
+  <div id="compare"></div>
+</div>
+
+<!-- Products Modal -->
+<div id="productsModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2><i class="fas fa-box-open"></i> <span id="modalSupplierName">Supplier Products</span></h2>
+      <span class="close">&times;</span>
+    </div>
+    <div class="modal-body" id="modalBody">
+      <div class="no-products">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Loading products...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+let map = L.map('map').setView([20.5937, 78.9629], 5);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+
+let markers = [];
+let vendorLat = 0;
+let vendorLng = 0;
+
+const btnFind = document.getElementById("btnFind");
+const btnAll = document.getElementById("btnAll");
+btnFind.disabled = true;
+btnAll.disabled = true;
+
+// Modal functionality
+const modal = document.getElementById("productsModal");
+const closeBtn = document.getElementsByClassName("close")[0];
+
+closeBtn.onclick = function() {
+  modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+// Detect vendor location
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      vendorLat = pos.coords.latitude;
+      vendorLng = pos.coords.longitude;
+
+      const vendorMarker = L.marker([vendorLat, vendorLng]).addTo(map)
+        .bindPopup('<b>📍 You (Vendor)</b>').openPopup();
+      markers.push(vendorMarker);
+
+      map.setView([vendorLat, vendorLng], 13);
+      document.getElementById('status').textContent = "✓ Location detected successfully!";
+      btnFind.disabled = false;
+      btnAll.disabled = false;
+      
+      loadAllSuppliers();
+    },
+    (err) => {
+      console.error(err);
+      document.getElementById('status').textContent = "⚠ Could not detect location. Please allow location access.";
+      loadAllSuppliers();
+    }
+  );
+} else {
+  document.getElementById('status').textContent = "❌ Geolocation not supported by your browser.";
+  loadAllSuppliers();
+}
+
+// Load all suppliers on map
+async function loadAllSuppliers() {
+  try {
+    const response = await fetch("/api/accounts/api/all_suppliers/");
+    const data = await response.json();
+    
+    if (data.success && data.suppliers.length > 0) {
+      const supplierMarkers = [];
+      
+      data.suppliers.forEach(s => {
+        const m = L.marker([s.lat, s.lng]).addTo(map)
+          .bindPopup(`
+            <div style="font-family: Poppins, sans-serif;">
+              <h4 style="margin: 0 0 8px 0; color: #2c3e50;">${s.name}</h4>
+              <p style="margin: 4px 0;"><strong>Type:</strong> ${s.business_type}</p>
+              <p style="margin: 4px 0;"><strong>Phone:</strong> ${s.phone}</p>
+              <p style="margin: 4px 0;"><strong>Email:</strong> ${s.email}</p>
+            </div>
+          `);
+        markers.push(m);
+        supplierMarkers.push(m);
+      });
+
+      if (supplierMarkers.length > 0) {
+        const group = new L.featureGroup(supplierMarkers);
+        map.fitBounds(group.getBounds().pad(0.1));
+      }
+      
+      document.getElementById('status').textContent = `✓ Found ${data.suppliers.length} supplier(s) on the map.`;
+    } else {
+      document.getElementById('status').textContent = "No suppliers found yet.";
+    }
+  } catch (err) {
+    console.error(err);
+    document.getElementById('status').textContent = "Error loading suppliers.";
+  }
+}
+
+// View supplier products
+// View supplier products - FIXED VERSION
+// View supplier products - COMPLETE FIXED VERSION
+async function viewSupplierProducts(supplierId, supplierName) {
+  console.log('=== Opening modal for supplier ===');
+  console.log('Supplier ID:', supplierId, 'Type:', typeof supplierId);
+  console.log('Supplier Name:', supplierName);
+  
+  modal.style.display = "block";
+  document.getElementById('modalSupplierName').textContent = supplierName + "'s Products";
+  document.getElementById('modalBody').innerHTML = `
+    <div class="no-products">
+      <i class="fas fa-spinner fa-spin"></i>
+      <p>Loading products...</p>
+    </div>
+  `;
+
+  try {
+    // First, try to get the SupplierProfile ID from the user ID
+    // Because the API expects supplier profile ID, not user ID
+    const supplierResponse = await fetch(`/products/my-supplier-products/`);
+    const supplierData = await supplierResponse.json();
+    
+    // Now fetch products with the correct supplier_id parameter
+    const response = await fetch(`/products/supplier-products/?supplier_id=${supplierId}`);
+    const data = await response.json();
+    
+    console.log('API Response:', data);
+    
+    // Get products array from response
+    const allProducts = data.results || data;
+    
+    console.log('Total products from API:', allProducts.length);
+    console.log('Filtering for supplier ID:', supplierId);
+    
+    // Filter products to only show those belonging to this specific supplier
+    const products = allProducts.filter(product => {
+      // Check multiple possible locations for supplier ID
+      let productSupplierId = null;
+      
+      if (product.supplier_id) {
+        // Direct supplier_id field (from serializer)
+        productSupplierId = product.supplier_id;
+      } else if (product.supplier && typeof product.supplier === 'object' && product.supplier.id) {
+        // Nested supplier object with id
+        productSupplierId = product.supplier.id;
+      } else if (typeof product.supplier === 'number') {
+        // Supplier as direct number
+        productSupplierId = product.supplier;
+      }
+      
+      console.log('Product:', product.product?.name, 'Product Supplier ID:', productSupplierId, 'Match:', Number(productSupplierId) === Number(supplierId));
+      
+      // Compare as numbers (convert both to numbers for accurate comparison)
+      return Number(productSupplierId) === Number(supplierId);
+    });
+    
+    console.log('Filtered products count:', products.length);
+    
+    if (products.length === 0) {
+      document.getElementById('modalBody').innerHTML = `
+        <div class="no-products">
+          <i class="fas fa-inbox"></i>
+          <h3>No Products Listed</h3>
+          <p>This supplier hasn't listed any products yet.</p>
+          <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+            Total products in database: ${allProducts.length}
+          </p>
+        </div>
+      `;
+      return;
+    }
+
+    let productsHTML = '<div class="product-grid">';
+    products.forEach(product => {
+      const productName = product.product?.name || 'N/A';
+      const categoryName = product.product?.category?.name || 'N/A';
+      const price = parseFloat(product.price || 0).toFixed(2);
+      const quantity = parseFloat(product.stock_quantity || 0).toFixed(2);
+      const available = product.is_available ? '✓ Available' : '✗ Not Available';
+      const availableClass = product.is_available ? '#27ae60' : '#e74c3c';
+
+      productsHTML += `
+        <div class="product-card">
+          <h4><i class="fas fa-leaf"></i> ${productName}</h4>
+          <div class="product-info">
+            <p><i class="fas fa-tag"></i> <strong>Category:</strong> ${categoryName}</p>
+            <p><i class="fas fa-box"></i> <strong>Stock:</strong> ${quantity} kg</p>
+            <p><i class="fas fa-check-circle"></i> <strong style="color: ${availableClass};">${available}</strong></p>
+          </div>
+          <div class="price-tag">
+            <i class="fas fa-rupee-sign"></i> ${price}/kg
+          </div>
+        </div>
+      `;
+    });
+    productsHTML += '</div>';
+
+    document.getElementById('modalBody').innerHTML = productsHTML;
+
+  } catch (err) {
+    console.error('Error loading products:', err);
+    document.getElementById('modalBody').innerHTML = `
+      <div class="no-products">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h3>Error Loading Products</h3>
+        <p>Failed to fetch products. Please try again later.</p>
+        <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+          Error: ${err.message}
+        </p>
+      </div>
+    `;
+  }
+}
+
+// Add this temporary debug function to test the API directly
+async function debugSupplierProducts(supplierId) {
+  console.log('=== DEBUG: Testing Supplier Products API ===');
+  console.log('Supplier ID:', supplierId);
+  
+  try {
+    // Test 1: Get all products (no filter)
+    const allResponse = await fetch('/products/supplier-products/');
+    const allData = await allResponse.json();
+    console.log('All products count:', (allData.results || allData).length);
+    
+    // Test 2: Get products with supplier filter
+    const filteredResponse = await fetch(`/products/supplier-products/?supplier_id=${supplierId}`);
+    const filteredData = await filteredResponse.json();
+    const filteredProducts = filteredData.results || filteredData;
+    console.log('Filtered products count:', filteredProducts.length);
+    
+    // Test 3: Log first product structure
+    if (filteredProducts.length > 0) {
+      console.log('Sample product structure:', {
+        id: filteredProducts[0].id,
+        supplier_id: filteredProducts[0].supplier_id,
+        supplier: filteredProducts[0].supplier,
+        product_name: filteredProducts[0].product?.name
+      });
+    } else {
+      console.log('No products found for supplier', supplierId);
+      
+      // Check if this supplier has products in the unfiltered list
+      const allProducts = allData.results || allData;
+      const matchingProducts = allProducts.filter(p => {
+        const sid = p.supplier_id || (p.supplier && p.supplier.id);
+        return Number(sid) === Number(supplierId);
+      });
+      console.log('Manual filter found:', matchingProducts.length, 'products');
+    }
+    
+  } catch (error) {
+    console.error('Debug error:', error);
+  }
+}
+
+// Call this in browser console: debugSupplierProducts(YOUR_SUPPLIER_ID)
+
+// Find nearby suppliers
+async function findSuppliers(item = null) {
+  const status = document.getElementById("status");
+  const compareDiv = document.getElementById("compare");
+
+  if (!vendorLat || !vendorLng) {
+    status.textContent = "⚠ Enable location to find nearby suppliers.";
+    return;
+  }
+
+  status.textContent = item ? `🔍 Searching for "${item}"... `: "🔍 Finding all nearby suppliers...";
+  compareDiv.innerHTML = "";
+
+  try {
+  let url = `/api/accounts/api/nearby/?lat=${vendorLat}&lng=${vendorLng}`;
+  if (item) url += `&item=${encodeURIComponent(item)}`;
+
+  const response = await fetch(url);
+  const data = await response.json();
+  const suppliers = data.suppliers || [];
+
+  markers.forEach(m => map.removeLayer(m));
+  markers = [];
+
+  const vendorMarker = L.marker([vendorLat, vendorLng])
+    .addTo(map)
+    .bindPopup('<b>📍 You (Vendor)</b>')
+    .openPopup();
+
+  markers.push(vendorMarker);
+
+  if (!suppliers.length) {
+    status.textContent = "No suppliers found nearby.";
+    return;
+  }
+
+    suppliers.forEach(s => {
+      const m = L.marker([s.lat, s.lng]).addTo(map)
+        .bindPopup(`
+          <div style="font-family: Poppins, sans-serif;">
+            <h4 style="margin: 0 0 8px 0; color: #2c3e50;">${s.name}</h4>
+            <p style="margin: 4px 0;"><strong>Type:</strong> ${s.business_type}</p>
+            <p style="margin: 4px 0;"><strong>Phone:</strong> ${s.phone}</p>
+            <p style="margin: 4px 0;"><strong>Distance:</strong> ${s.distance} km</p>
+          </div>
+        `);
+      markers.push(m);
+    });
+
+    let compareHTML = `<h3><i class="fas fa-map-marker-alt"></i> Suppliers Nearby (Sorted by Distance)</h3>
+      <table>
+      <thead>
+        <tr>
+          <th><i class="fas fa-store"></i> Supplier</th>
+          <th><i class="fas fa-tags"></i> Type</th>
+          <th><i class="fas fa-phone"></i> Phone</th>
+          <th><i class="fas fa-route"></i> Distance</th>
+          <th><i class="fas fa-box-open"></i> Products</th>
+        </tr>
+      </thead>
+      <tbody>`;
+    suppliers.forEach(s => {
+      compareHTML += `<tr>
+        <td><strong>${s.name}</strong></td>
+        <td>${s.business_type}</td>
+        <td>${s.phone}</td>
+        <td><span style="color: #3498db; font-weight: 600;">${s.distance} km</span></td>
+        <td>
+          <button class="view-products-btn" onclick="viewSupplierProducts(${s.supplier_id}, '${s.name.replace(/'/g, "\\'")}')">
+            <i class="fas fa-eye"></i> View Products
+          </button>
+        </td>
+      </tr>`;
+    });
+    compareHTML += "</tbody></table>";
+    compareDiv.innerHTML = compareHTML;
+
+    map.setView([vendorLat, vendorLng], 12);
+    status.textContent = `✓ Found ${suppliers.length} supplier(s) nearby.`;
+
+  } catch (err) {
+    console.error(err);
+    status.textContent = "❌ Error fetching suppliers.";
+  }
+}
+
+btnFind.onclick = () => findSuppliers(document.getElementById('requirement').value.trim());
+btnAll.onclick = () => findSuppliers();
+</script>
+</body>
+</html>

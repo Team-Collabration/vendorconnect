@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VendorConnect</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/footer.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="{% static 'js/script.js' %}"></script>
+
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <h1 class="logo">VendorConnect</h1>
+      <ul>
+        <li><a href="{% url 'index' %}">Home</a></li>
+        <li><a href="{% url 'about' %}">About</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+    
+        
+      </ul>
+  </nav>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      text-align: center;
+    }
+    h2 {
+      color: #333;
+    }
+    .btn {
+      display: inline-block;
+      margin: 20px;
+      padding: 15px 30px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      color: white;
+    }
+    .vendor-btn {
+      background-color: #4a6cf7;
+    }
+    .vendor-btn:hover {
+      background-color: #2f55d4;
+    }
+    .supplier-btn {
+      background-color: #10b981;
+    }
+    .supplier-btn:hover {
+      background-color: #059669;
+    }
+  </style>
+</header>
+<main>
+  <h2>Select Your Role</h2>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+    <button id="vendor" class="btn vendor-btn">Vendor </button>
+    <button id="supplier" class="btn supplier-btn">Supplier</button>
+
+  </div>
+
+
+<!-- <div id="supplierLoginForm" class="hidden box">
+  <h3>Supplier Login</h3>
+  <form action="login.html">
+    <input type="email" placeholder="Email" required><br>
+    <input type="password" placeholder="Password" required><br>
+    <button type="submit" class="btn vendor-btn">Login</button>
+  </form>
+</div>
+
+
+<div id="supplierSignupForm" class="hidden box">
+  <h3>Supplier Sign Up</h3>
+  <form action="suppliersignup.html">
+    <input type="text" placeholder="Name" required><br>
+    <input type="email" placeholder="Email" required><br>
+    <input type="password" placeholder="Password" required><br>
+    <button type="submit" class="btn supplier-btn">Sign Up</button>
+  </form>
+</div>
+   -->
+  <div class="hero">
+    <h2>Connect <span class="highlight">Directly</span>, Cut the Middleman.</h2>
+    <p>Skip brokers and save on costs. Find suppliers, negotiate better prices, and streamline your supply chain.</p>
+    <div class="hero-buttons">
+      <br>
+      <span class="hover-effect"></span>
+    </div>
+  </div>
+</main>
+
+  <section class="info-section">
+    <h2>New to VendorConnect?</h2>
+    <p>Join thousands of vendors and suppliers cutting costs together</p>
+    <div class="info-cards">
+      <div class="card">
+        <h3>For New Vendors</h3>
+        <ul>
+          <li>Find 250+ verified suppliers</li>
+          <li>Save ₹15,000+ monthly</li>
+          <li>Direct WhatsApp pricing</li>
+          <li>Setup in under 2 minutes</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>For New Suppliers</h3>
+        <ul>
+          <li>Connect with 500+ vendors</li>
+          <li>List and set your prices</li>
+          <li>Get verified to boost trust</li>
+          <li>No monthly fees</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+
+   
+  <section class="why-section">
+  <h2>Why Direct Connections Matter</h2>
+  <p>Cut out intermediaries and build stronger business relationships</p>
+  <div class="why-cards">
+    <div class="why-card pink">
+      <div class="icon">📉</div>
+      <h3>Middleman Markup</h3>
+      <p>Brokers add 15–30% to every transaction</p>
+      <div class="highlight-box">✔ Direct communication & pricing</div>
+    </div>
+
+    <div class="why-card yellow">
+      <div class="icon">💬</div>
+      <h3>Communication Delays</h3>
+      <p>Orders lost in translation through multiple parties</p>
+      <div class="highlight-box">✔ Instant chat with suppliers</div>
+    </div>
+<section>
+    <div class="why-card purple">
+      <div class="icon">🧩</div>
+      <h3>Limited Flexibility</h3>
+      <p>Can't negotiate terms or customize orders</p>
+      <div class="highlight-box">✔ Custom deals & relationships</div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials">
+  <h2>What Our Community Says</h2>
+  <p>Real vendors and suppliers sharing their success stories</p>
+
+  <div class="testimonial-cards">
+    <div class="testimonial-card">
+      <div class="testimonial-header">
+        <div class="icon orange"><i class="fas fa-user-tie"></i></div>
+        <div>
+          <strong>Rajesh Kumar</strong><br>
+          <small>Chaat Vendor, Delhi</small>
+        </div>
+      </div>
+      <p>"I used to pay ₹35/kg for onions through brokers. Now I get them directly at ₹25/kg. Saved ₹18,000 last month!"</p>
+      <div class="stars">★★★★★</div>
+    </div>
+
+    <div class="testimonial-card">
+      <div class="testimonial-header">
+        <div class="icon green"><i class="fas fa-truck"></i></div>
+        <div>
+          <strong>Priya Sharma</strong><br>
+          <small>Spice Supplier, Khari Baoli</small>
+        </div>
+      </div>
+      <p>"Connected with 50+ vendors in 2 months. My business has grown 40% since joining VendorConnect!"</p>
+      <div class="stars">★★★★★</div>
+    </div>
+
+    <div class="testimonial-card">
+      <div class="testimonial-header">
+        <div class="icon yellow"><i class="fas fa-store"></i></div>
+        <div>
+          <strong>Arjun Patel</strong><br>
+          <small>Dosa Center, Bangalore</small>
+        </div>
+      </div>
+      <p>"No more waiting for brokers. I WhatsApp suppliers directly and get fresh supplies the same day!"</p>
+      <div class="stars">★★★★★</div>
+    </div>
+  </div>
+</section>
+    <section class="features-section">
+  <h2>Powerful Features</h2>
+  <p class="subtitle">Everything you need for a successful street food business</p>
+  <div class="features-grid">
+
+    <div class="feature-card">
+      <h3><i class="fas fa-location-dot" style="color:#f97316; margin-right: 10px;"></i>Location-Based Discovery</h3>
+      <p>Find suppliers near you with real-time distance calculation and delivery estimates.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3><i class="fas fa-star" style="color:#facc15; margin-right: 10px;"></i>Reviews & Ratings</h3>
+      <p>Make informed decisions with authentic reviews from verified vendors.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3><i class="fas fa-lightbulb" style="color:#4f46e5; margin-right: 10px;"></i>Smart Recommendations</h3>
+      <p>AI-powered suggestions based on your order history and business needs.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3><i class="fas fa-comments" style="color:#10b981; margin-right: 10px;"></i>Direct Messaging</h3>
+      <p>Communicate directly with suppliers for custom orders and negotiations.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3><i class="fas fa-truck-fast" style="color:#ef4444; margin-right: 10px;"></i>Order Tracking</h3>
+      <p>Real-time updates on your orders from placement to delivery.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3><i class="fas fa-chart-line" style="color:#3b82f6; margin-right: 10px;"></i>Price Analytics</h3>
+      <p>Track price trends and get alerts when your regular items go on sale.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- <div class="comparison-section">
+  <h2>Smart Price Comparison</h2>
+  <p class="subtitle">Compare prices across multiple suppliers instantly</p>
+
+  <div class="product-selector">
+    <label for="productSelect">Select Product:</label>
+    <select id="productSelect">
+      <option value="onions">Red Onions</option>
+      <option value="tomatoes">Tomatoes</option>
+      <option value="potatoes">Potatoes</option>
+      <option value="carrots">Carrots</option>
+      <option value="cabbage">Cabbage</option>
+      <option value="cauliflower">Cauliflower</option>
+    </select>
+    <label for="quantitySelect">Quantity:</label>
+    <select id="quantitySelect">
+      <option value="25">25kg</option>
+      <option value="50" selected>50kg</option>
+      <option value="100">100kg</option>
+    </select>
+  </div>
+  
+  <p class="compare-header">Comparing: <span id="selectedProduct">Red Onions</span> (<span id="selectedQuantity">50</span>kg)</p>
+  <button class="refresh-btn" id="refreshBtn"><i class="fas fa-sync-alt"></i> Refresh Prices</button>
+
+  <div class="loading" id="loadingIndicator" style="display: none;">
+    <i class="fas fa-spinner fa-spin"></i> Fetching latest prices...
+  </div>
+
+  <table class="price-table" id="priceTable">
+    <thead>
+      <tr>
+        <th>Supplier</th>
+        <th>Price/kg</th>
+        <th>Total</th>
+        <th>Distance</th>
+        <th>Rating</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="priceTableBody">
+      Dynamic content will be loaded here 
+    </tbody>
+  </table>
+
+  <p class="footer-note" id="lastUpdated">📊 Prices updated <span id="updateTime">just now</span></p>
+  <p class="save-msg" id="savingsMessage">You save ₹0 with the best price!</p>
+</div>
+
+Account Check Modal -->
+<div id="accountCheckModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalTitle">Welcome to VendorConnect!</h3>
+      <span class="close" id="closeModal">&times;</span>
+    </div>
+    <div class="modal-body">
+      <p id="modalMessage">Do you already have an account with us?</p>
+      <div class="modal-buttons">
+        <button class="modal-btn yes-btn" id="hasAccountBtn">Yes, I have an account</button>
+        <button class="modal-btn no-btn" id="noAccountBtn">No, I'm new here</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-column about">
+      <h3>VendorConnect</h3>
+      <p>Empowering India's street food vendors with trusted suppliers, competitive prices, and seamless ordering.</p>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-column">
+      <h4>For Vendors</h4>
+      <ul>
+        <li><a href="{% url 'findsuppliers' %}">Find Suppliers</a></li>
+        <li><a href="{% url 'compareprices' %}">Compare Prices</a></li>
+        <li><a href="{% url 'bulk' %}">Bulk Orders</a></li>
+        <li><a href="{% url 'leavereviews' %}">Reviews</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-column">
+      <h4>For Suppliers</h4>
+      <ul>
+        <li><a href="{% url 'listproducts' %}">List Products</a></li>
+        <li><a href="{% url 'manageorders' %}">Manage Orders</a></li>
+        <li><a href="{% url 'analytics' %}">Analytics</a></li>
+        <li><a href="{% url 'support' %}">Support</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>©️ 2024 VendorConnect. All rights reserved.</p>
+  </div>
+</footer>
+<script>
+  const modal = document.getElementById("accountCheckModal");
+  const closeModal = document.getElementById("closeModal");
+  const hasAccountBtn = document.getElementById("hasAccountBtn");
+  const noAccountBtn = document.getElementById("noAccountBtn");
+
+  let selectedRole = null; // to track whether user clicked Vendor or Supplier
+
+  // Vendor button clicked
+  document.getElementById("vendor").addEventListener("click", function() {
+    selectedRole = "vendor";
+    modal.style.display = "block"; // show modal
+  });
+
+  // Supplier button clicked
+  document.getElementById("supplier").addEventListener("click", function() {
+    selectedRole = "supplier";
+    modal.style.display = "block"; // show modal
+  });
+
+  // Close modal (X button)
+  closeModal.addEventListener("click", function() {
+    modal.style.display = "none";
+  });
+
+  // If user has account → go to login
+  hasAccountBtn.addEventListener("click", function() {
+    modal.style.display = "none";
+    if (selectedRole === "vendor") {
+      window.location.href = "{% url 'vendorlogin' %}";
+    } else if (selectedRole === "supplier") {
+      window.location.href = "{% url 'supplierlogin' %}";
+    }
+  });
+
+  // If user does not have account → redirect to correct signup
+  noAccountBtn.addEventListener("click", function() {
+    modal.style.display = "none";
+    if (selectedRole === "vendor") {
+      window.location.href = "{% url 'vendorsignup' %}";
+    } else if (selectedRole === "supplier") {
+      window.location.href = "{% url 'suppliersignup' %}";
+    }
+  });
+
+  // Close modal when clicking outside the box
+  window.addEventListener("click", function(event) {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+</script>
+<style>
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1000; 
+  left: 0; 
+  top: 0; 
+  width: 100%; 
+  height: 100%; 
+  background-color: rgba(0,0,0,0.5); 
+}
+
+.modal-content {
+  background: #fff;
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close {
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.modal-buttons {
+  margin-top: 20px;
+}
+
+.modal-btn {
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.yes-btn {
+  background-color: #4a6cf7;
+  color: white;
+}
+
+.no-btn {
+  background-color: #10b981;
+  color: white;
+}
+</style>
+
+
+</body>
+</html>

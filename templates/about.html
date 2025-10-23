@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About - VendorConnect</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/footer.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    {% comment %} <script src="{% static 'js/script.js' %}"></script> {% endcomment %}
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
+    <link rel="stylesheet" href="{% static 'css/contact.css' %}">
+
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <h1 class="logo">VendorConnect</h1>
+      <ul>
+        <li><a href="{% url 'index' %}">Home</a></li>
+        <li><a href="{% url 'about' %}" class="active">About</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+        <!--{% comment %} <li><a class="login-btn" href="{% url 'vendorsignup' %}">Vendor Signup</a></li>
+        <li><a class="login-btn" href="{% url 'suppliersignup' %}">Supplier Signup</a></li> {% endcomment %}-->
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+<section class="about-hero">
+  <div class="hero-overlay">
+    <h1>About VendorConnect</h1>
+    <p>Connecting vendors and suppliers directly, eliminating intermediaries, and building stronger partnerships.</p>
+  </div>
+</section>
+
+<!-- Info Section with Boxes -->
+<section class="info-section">
+  <div class="info-box">
+    <h2>Our Mission</h2>
+    <p>
+      Our mission is to empower local vendors and suppliers through direct, transparent connections.
+      We help small businesses reduce costs, improve communication, and embrace digital growth.
+    </p>
+  </div>
+
+  <div class="info-box">
+    <h2>Our Vision</h2>
+    <p>
+      We envision a thriving ecosystem where every small business has access to trusted suppliers,
+      fair pricing, and seamless trade powered by technology and collaboration.
+    </p>
+  </div>
+
+  <div class="info-box">
+    <h2>What We Offer</h2>
+    <ul>
+      <li><strong>Direct Connections:</strong> Connect without middlemen and build trusted relationships.</li>
+      <li><strong>Live Chat & Support:</strong> Communicate instantly to make faster decisions.</li>
+      <li><strong>Smart Analytics:</strong> Track sales, compare prices, and understand trends.</li>
+      <li><strong>Easy Order Management:</strong> Streamlined dashboards for smooth operations.</li>
+      <li><strong>Cost Transparency:</strong> Real-time pricing that benefits both vendors and suppliers.</li>
+    </ul>
+  </div>
+</section>
+
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-column about">
+        <h3>VendorConnect</h3>
+        <p>Empowering India’s street food vendors with trusted suppliers, competitive prices, and seamless ordering.</p>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-column">
+        <h4>For Vendors</h4>
+        <ul>
+          <li><a href="{% url 'findsuppliers' %}">Find Suppliers</a></li>
+          <li><a href="{% url 'compareprices' %}">Compare Prices</a></li>
+          <li><a href="{% url 'bulk' %}">Bulk Orders</a></li>
+          <li><a href="{% url 'leavereviews' %}">Reviews</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>For Suppliers</h4>
+        <ul>
+          <li><a href="{% url 'listproducts' %}">List Products</a></li>
+          <li><a href="{% url 'manageorders' %}">Manage Orders</a></li>
+          <li><a href="{% url 'analytics' %}">Analytics</a></li>
+          <li><a href="{% url 'support' %}">Support</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <!--<p>©️ 2024 VendorConnect. All rights reserved.</p>-->
+    </div>
+  </footer>
+</body>
+</html>
