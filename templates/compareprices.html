@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Compare Supplier Prices</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 * {
   margin: 0;
@@ -14,22 +14,23 @@
 }
 
 body {
-  font-family: "Poppins", sans-serif;
- background: linear-gradient(135deg, beige 0%, rgb(225, 237, 246) 100%);
+  font-family: "Inter", sans-serif;
+  background: linear-gradient(135deg, #e3f2fd 0%, #f0f7ff 50%, #ffffff 100%);
   min-height: 100vh;
   display: flex;
+  color: #1a1a2e;
 }
 
 /* Sidebar */
 .sidebar {
   height: 100vh;
   width: 260px;
-  background-color: #2c3e50;
+  background: linear-gradient(180deg, #1e3a5f 0%, #2c5282 100%);
   display: flex;
   flex-direction: column;
   padding: 30px 0;
   position: fixed;
-  box-shadow: 4px 0 15px rgba(0,0,0,0.2);
+  box-shadow: 4px 0 24px rgba(30, 58, 95, 0.15);
   z-index: 1000;
 }
 
@@ -41,81 +42,92 @@ body {
 
 .sidebar-header h2 {
   color: #fff;
-  font-size: 1.4em;
+  font-size: 1.3em;
   display: flex;
   align-items: center;
   gap: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
 }
 
 .sidebar-header h2 i {
-  color: #3498db;
+  color: #90caf9;
 }
 
 .sidebar a {
   display: flex;
   align-items: center;
-  padding: 15px 25px;
+  padding: 14px 25px;
   text-decoration: none;
-  color: #ecf0f1;
+  color: rgba(255, 255, 255, 0.85);
   font-weight: 500;
-  margin: 5px 15px;
-  border-radius: 8px;
+  margin: 4px 15px;
+  border-radius: 10px;
   transition: all 0.3s ease;
   position: relative;
+  font-size: 0.95em;
 }
 
 .sidebar a i {
   margin-right: 12px;
   min-width: 20px;
   text-align: center;
-  font-size: 1.1em;
+  font-size: 1.05em;
+  opacity: 0.9;
 }
 
 .sidebar a:hover {
-  background-color: rgba(52, 152, 219, 0.2);
-  transform: translateX(5px);
+  background-color: rgba(144, 202, 249, 0.15);
+  color: #fff;
+  transform: translateX(3px);
 }
 
 .sidebar a.active {
-  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+  background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(66, 165, 245, 0.3);
 }
 
 /* Main Content */
 .main-content {
   margin-left: 260px;
   width: calc(100% - 260px);
-  padding: 30px;
+  padding: 30px 40px;
 }
 
 /* Header */
 header {
-  background: #fff;
-  color: #2c3e50;
-  padding: 25px 30px;
-  border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  background: #ffffff;
+  color: #1e3a5f;
+  padding: 28px 35px;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(30, 58, 95, 0.08);
   margin-bottom: 30px;
+  border: 1px solid rgba(66, 165, 245, 0.1);
 }
 
 header h1 {
-  font-size: 2em;
+  font-size: 1.9em;
   display: flex;
   align-items: center;
   gap: 15px;
   margin: 0;
+  font-weight: 600;
+  letter-spacing: -0.5px;
 }
 
 header h1 i {
-  color: #f39c12;
+  color: #42a5f5;
+  font-size: 0.9em;
 }
 
 /* Container */
 .container {
-  background: #fff;
-  border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  padding: 30px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(30, 58, 95, 0.08);
+  padding: 35px;
+  border: 1px solid rgba(66, 165, 245, 0.1);
 }
 
 /* Stats Section */
@@ -129,34 +141,59 @@ header h1 i {
 .stat-card {
   flex: 1;
   min-width: 200px;
-  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-  color: white;
-  padding: 20px;
-  border-radius: 12px;
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  color: #1565c0;
+  padding: 24px;
+  border-radius: 14px;
   text-align: center;
-  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+  box-shadow: 0 2px 12px rgba(21, 101, 192, 0.1);
+  border: 1px solid rgba(66, 165, 245, 0.2);
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(21, 101, 192, 0.15);
 }
 
 .stat-card h3 {
-  font-size: 2em;
-  margin-bottom: 5px;
+  font-size: 2.2em;
+  margin-bottom: 8px;
+  font-weight: 700;
 }
 
 .stat-card p {
-  opacity: 0.9;
-  font-size: 0.95em;
+  font-size: 0.9em;
+  font-weight: 500;
+  opacity: 0.85;
 }
 
-/* Search/Filter Section */
+.stat-card:nth-child(2) {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  color: #2e7d32;
+}
+
+.stat-card:nth-child(3) {
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  color: #e65100;
+}
+
+.stat-card:nth-child(4) {
+  background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+  color: #c2185b;
+}
+
+/* Filter Section */
 .filter-section {
-  background: #f8f9fa;
-  padding: 20px;
-  border-radius: 12px;
+  background: #f8fbff;
+  padding: 24px;
+  border-radius: 14px;
   margin-bottom: 30px;
   display: flex;
   gap: 15px;
   align-items: center;
   flex-wrap: wrap;
+  border: 1px solid rgba(66, 165, 245, 0.15);
 }
 
 .filter-section input,
@@ -164,62 +201,65 @@ header h1 i {
   flex: 1;
   min-width: 200px;
   padding: 12px 18px;
-  border: 2px solid #e0e0e0;
+  border: 2px solid #e3f2fd;
   border-radius: 10px;
-  font-size: 15px;
-  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  font-family: "Inter", sans-serif;
   transition: all 0.3s ease;
+  background: #ffffff;
+  color: #1e3a5f;
 }
 
 .filter-section input:focus,
 .filter-section select:focus {
   outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+  border-color: #42a5f5;
+  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.1);
 }
 
 .filter-section button {
-  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
   color: white;
   border: none;
-  padding: 12px 25px;
+  padding: 12px 28px;
   border-radius: 10px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
-  font-family: "Poppins", sans-serif;
+  font-family: "Inter", sans-serif;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+  box-shadow: 0 4px 12px rgba(66, 165, 245, 0.25);
 }
 
 .filter-section button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+  box-shadow: 0 6px 20px rgba(66, 165, 245, 0.35);
 }
 
 /* Item Block */
 .item-block {
-  margin-bottom: 30px;
-  border-radius: 12px;
+  margin-bottom: 28px;
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 12px rgba(30, 58, 95, 0.06);
   transition: all 0.3s ease;
+  border: 1px solid rgba(66, 165, 245, 0.1);
 }
 
 .item-block:hover {
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px rgba(30, 58, 95, 0.1);
   transform: translateY(-2px);
 }
 
 .item-header {
-  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  background: linear-gradient(135deg,rgb(108, 178, 239) 0%,rgb(161, 202, 252) 100%);
   color: white;
-  padding: 18px 25px;
+  padding: 20px 28px;
   font-weight: 600;
-  font-size: 1.3em;
+  font-size: 1.2em;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -232,22 +272,23 @@ header h1 i {
 }
 
 .item-header i {
-  font-size: 1.2em;
+  font-size: 1.15em;
 }
 
 .price-comparison-badge {
   background: rgba(255, 255, 255, 0.2);
-  padding: 6px 15px;
+  padding: 8px 18px;
   border-radius: 20px;
-  font-size: 0.75em;
+  font-size: 0.72em;
   display: flex;
   align-items: center;
   gap: 8px;
   backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .price-diff {
-  font-weight: 700;
+  font-weight: 600;
   color: #fff;
 }
 
@@ -259,24 +300,26 @@ table {
 }
 
 th {
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
   color: white;
-  padding: 15px;
+  padding: 16px;
   text-align: left;
   font-weight: 600;
-  font-size: 0.95em;
+  font-size: 0.88em;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
 }
 
 th i {
   margin-right: 8px;
+  opacity: 0.9;
 }
 
 td {
-  padding: 15px;
-  border-bottom: 1px solid #ecf0f1;
-  color: #2c3e50;
+  padding: 18px 16px;
+  border-bottom: 1px solid #f0f7ff;
+  color: #1e3a5f;
+  font-size: 0.95em;
 }
 
 tr:last-child td {
@@ -284,22 +327,23 @@ tr:last-child td {
 }
 
 tr:hover {
-  background-color: #f8f9fa;
+  background-color: #f8fbff;
 }
 
 .price-cell {
   font-weight: 600;
-  color: #27ae60;
-  font-size: 1.1em;
+  color: #2e7d32;
+  font-size: 1.15em;
 }
 
 .best-price {
-  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 100%);
 }
 
 .best-price .price-cell {
-  color: #155724;
+  color: #1b5e20;
   font-size: 1.3em;
+  font-weight: 700;
 }
 
 .price-badge-container {
@@ -309,62 +353,66 @@ tr:hover {
 }
 
 .best-badge {
-  background: #27ae60;
+  background: linear-gradient(135deg, #43a047 0%, #2e7d32 100%);
   color: white;
-  padding: 4px 12px;
+  padding: 5px 14px;
   border-radius: 20px;
   font-size: 0.75em;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
   gap: 5px;
+  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.25);
 }
 
 .savings-badge {
-  background: #e74c3c;
+  background: linear-gradient(135deg, #ef5350 0%, #d32f2f 100%);
   color: white;
-  padding: 4px 12px;
+  padding: 5px 12px;
   border-radius: 20px;
   font-size: 0.7em;
   font-weight: 600;
+  box-shadow: 0 2px 8px rgba(211, 47, 47, 0.2);
 }
 
 .location-badge {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  background: #e8f4f8;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 0.85em;
-  color: #2c3e50;
+  gap: 6px;
+  background: #e3f2fd;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.82em;
+  color: #1565c0;
+  border: 1px solid #bbdefb;
 }
 
 .location-badge i {
-  color: #3498db;
+  color: #42a5f5;
 }
 
 /* Empty State */
 .empty-state {
   text-align: center;
   padding: 60px 20px;
-  color: #7f8c8d;
+  color: #64748b;
 }
 
 .empty-state i {
   font-size: 4em;
   margin-bottom: 20px;
-  color: #bdc3c7;
+  color: #cbd5e1;
 }
 
 .empty-state h3 {
   font-size: 1.5em;
   margin-bottom: 10px;
-  color: #2c3e50;
+  color: #1e3a5f;
+  font-weight: 600;
 }
 
 .empty-state p {
-  font-size: 1.1em;
+  font-size: 1.05em;
 }
 
 /* Action Buttons */
@@ -375,31 +423,93 @@ tr:hover {
 }
 
 .action-btn {
-  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
   color: white;
   border: none;
-  padding: 8px 16px;
+  padding: 9px 18px;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 0.9em;
+  font-size: 0.88em;
   font-weight: 600;
   transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  box-shadow: 0 2px 8px rgba(66, 165, 245, 0.25);
 }
 
 .action-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+  box-shadow: 0 4px 14px rgba(66, 165, 245, 0.35);
 }
 
 .order-btn {
-  background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+  background: linear-gradient(135deg, #43a047 0%, #2e7d32 100%);
 }
 
 .order-btn:hover {
-  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+  box-shadow: 0 4px 14px rgba(46, 125, 50, 0.35);
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(30, 58, 95, 0.5);
+  backdrop-filter: blur(4px);
+  overflow-y: auto;
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 3% auto;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(30, 58, 95, 0.2);
+  animation: slideDown 0.3s ease;
+  max-width: 600px;
+  border: 1px solid rgba(66, 165, 245, 0.15);
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+  color: white;
+  padding: 22px 28px;
+  border-radius: 16px 16px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5em;
+  font-weight: 600;
+}
+
+.modal-header .close {
+  color: white;
+  font-size: 32px;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+  transition: transform 0.2s;
+}
+
+.modal-header .close:hover {
+  transform: rotate(90deg);
+}
+
+.modal-body {
+  padding: 28px;
 }
 
 /* Responsive Design */
@@ -483,16 +593,16 @@ tr:hover {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #f0f7ff;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3498db;
+  background: linear-gradient(180deg, #42a5f5 0%, #1e88e5 100%);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2980b9;
+  background: linear-gradient(180deg, #1e88e5 0%, #1565c0 100%);
 }
 </style>
 </head>
@@ -531,15 +641,15 @@ tr:hover {
         <h3 id="total-items">{{ grouped|length|default:0 }}</h3>
         <p><i class="fas fa-box"></i> Product Categories</p>
       </div>
-      <div class="stat-card" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%);">
+      <div class="stat-card">
         <h3 id="total-suppliers">0</h3>
         <p><i class="fas fa-users"></i> Total Suppliers</p>
       </div>
-      <div class="stat-card" style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);">
+      <div class="stat-card">
         <h3 id="avg-price">₹0</h3>
         <p><i class="fas fa-chart-line"></i> Average Price</p>
       </div>
-      <div class="stat-card" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);">
+      <div class="stat-card">
         <h3 id="max-savings">₹0</h3>
         <p><i class="fas fa-piggy-bank"></i> Max Savings</p>
       </div>
@@ -639,6 +749,95 @@ tr:hover {
     {% endif %}
   </div>
 </div>
+
+<!-- Order Modal -->
+<div id="orderModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2><i class="fas fa-shopping-cart"></i> Place Order</h2>
+      <span class="close" onclick="closeOrderModal()">&times;</span>
+    </div>
+    <div class="modal-body">
+      <form id="orderForm">
+        <input type="hidden" id="order_supplier_product_id">
+        <input type="hidden" id="order_unit_price">
+        
+        <div style="background: #f8fbff; padding: 18px; border-radius: 12px; margin-bottom: 22px; border: 1px solid #e3f2fd;">
+          <h3 style="margin: 0 0 12px 0; color: #1e3a5f; font-weight: 600; font-size: 1.1em;">Order Details</h3>
+          <p style="margin: 6px 0; color: #2c5282;"><strong>Product:</strong> <span id="order_product_name"></span></p>
+          <p style="margin: 6px 0; color: #2c5282;"><strong>Supplier:</strong> <span id="order_supplier_name"></span></p>
+          <p style="margin: 6px 0; color: #2c5282;"><strong>Unit Price:</strong> ₹<span id="order_price"></span>/<span id="order_unit"></span></p>
+          <p style="margin: 6px 0; color: #2c5282;"><strong>Available Stock:</strong> <span id="order_stock"></span> <span id="order_unit2"></span></p>
+          <p style="margin: 6px 0; color: #2c5282;"><strong>Minimum Order:</strong> <span id="order_min"></span> <span id="order_unit3"></span></p>
+        </div>
+
+        <div style="margin-bottom: 18px;">
+          <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1e3a5f;">
+            <i class="fas fa-box"></i> Quantity (<span id="order_unit4"></span>):*
+          </label>
+          <input type="number" id="order_quantity" step="0.01" min="0.01" required
+                 style="width: 100%; padding: 12px; border: 2px solid #e3f2fd; border-radius: 10px; font-size: 15px; font-family: 'Inter', sans-serif;"
+                 placeholder="Enter quantity">
+          <small style="color: #64748b; margin-top: 4px; display: block;">Minimum order: <span id="order_min2"></span></small>
+        </div>
+
+        <div style="margin-bottom: 18px;">
+          <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1e3a5f;">
+            <i class="fas fa-map-marker-alt"></i> Delivery Address:*
+          </label>
+          <textarea id="order_address" rows="3" required
+                    style="width: 100%; padding: 12px; border: 2px solid #e3f2fd; border-radius: 10px; font-size: 15px; font-family: 'Inter', sans-serif;"
+                    placeholder="Enter complete delivery address"></textarea>
+        </div>
+
+        <div style="margin-bottom: 18px;">
+          <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1e3a5f;">
+            <i class="fas fa-phone"></i> Contact Phone:*
+          </label>
+          <input type="tel" id="order_phone" required
+                 style="width: 100%; padding: 12px; border: 2px solid #e3f2fd; border-radius: 10px; font-size: 15px; font-family: 'Inter', sans-serif;"
+                 placeholder="Enter contact number">
+        </div>
+
+        <div style="margin-bottom: 18px;">
+          <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1e3a5f;">
+            <i class="fas fa-calendar"></i> Expected Delivery Date:
+          </label>
+          <input type="date" id="order_delivery_date"
+                 style="width: 100%; padding: 12px; border: 2px solid #e3f2fd; border-radius: 10px; font-size: 15px; font-family: 'Inter', sans-serif;">
+        </div>
+
+        <div style="margin-bottom: 22px;">
+          <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #1e3a5f;">
+            <i class="fas fa-comment"></i> Additional Notes:
+          </label>
+          <textarea id="order_notes" rows="2"
+                    style="width: 100%; padding: 12px; border: 2px solid #e3f2fd; border-radius: 10px; font-size: 15px; font-family: 'Inter', sans-serif;"
+                    placeholder="Any special instructions or requirements"></textarea>
+        </div>
+
+        <div style="background: #e3f2fd; padding: 18px; border-radius: 12px; margin-bottom: 22px; border: 1px solid #bbdefb;">
+          <h3 style="margin: 0 0 10px 0; color: #1565c0; font-weight: 600;">Order Summary</h3>
+          <p style="margin: 5px 0; font-size: 18px; color: #1565c0;">
+            <strong>Total Amount: ₹<span id="order_total_price">0.00</span></strong>
+          </p>
+        </div>
+
+        <div style="display: flex; gap: 12px;">
+          <button type="button" onclick="closeOrderModal()" 
+                  style="flex: 1; padding: 13px; background: #90a4ae; color: white; border: none; border-radius: 10px; font-size: 15px; cursor: pointer; font-weight: 600; font-family: 'Inter', sans-serif; transition: all 0.3s ease;">
+            Cancel
+          </button>
+          <button type="submit" id="submitOrderBtn"
+                  style="flex: 2; padding: 13px; background: linear-gradient(135deg, #43a047 0%, #2e7d32 100%); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; box-shadow: 0 4px 12px rgba(46, 125, 50, 0.25); transition: all 0.3s ease;">
+            <i class="fas fa-check"></i> Confirm Order
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <script>
 // Calculate and display statistics
 document.addEventListener('DOMContentLoaded', function() {
@@ -799,12 +998,9 @@ function applyFilters() {
   }
 }
 
-// Open order modal
-// Open order modal
 function openOrderModal(button) {
-  console.log('openOrderModal called'); // Debug
+  console.log('openOrderModal called');
   
-  // Get data from button attributes
   const productId = button.getAttribute('data-product-id');
   const supplierName = button.getAttribute('data-supplier');
   const itemName = button.getAttribute('data-item');
@@ -813,9 +1009,8 @@ function openOrderModal(button) {
   const minOrder = parseFloat(button.getAttribute('data-min-order') || 1);
   const unit = button.getAttribute('data-unit') || 'kg';
   
-  console.log('Order data:', { productId, supplierName, itemName, price, stock, minOrder, unit }); // Debug
+  console.log('Order data:', { productId, supplierName, itemName, price, stock, minOrder, unit });
   
-  // Fill modal with data
   document.getElementById('order_supplier_product_id').value = productId;
   document.getElementById('order_unit_price').value = price;
   document.getElementById('order_product_name').textContent = itemName;
@@ -825,39 +1020,33 @@ function openOrderModal(button) {
   document.getElementById('order_min').textContent = minOrder.toFixed(2);
   document.getElementById('order_min2').textContent = minOrder.toFixed(2) + ' ' + unit;
   
-  // Set all unit displays
   document.querySelectorAll('#order_unit, #order_unit2, #order_unit3, #order_unit4').forEach(el => {
     el.textContent = unit;
   });
   
-  // Set minimum quantity
   const quantityInput = document.getElementById('order_quantity');
   quantityInput.min = minOrder;
   quantityInput.value = minOrder;
   
-  // Set minimum date to today
   const today = new Date().toISOString().split('T')[0];
   const deliveryDateInput = document.getElementById('order_delivery_date');
   if (deliveryDateInput) {
     deliveryDateInput.min = today;
   }
   
-  // Calculate initial total
   updateOrderTotal();
   
-  // Show modal
   const modal = document.getElementById('orderModal');
   modal.style.display = 'block';
   
-  console.log('Modal opened'); // Debug
+  console.log('Modal opened');
 }
-// Close order modal
+
 function closeOrderModal() {
   document.getElementById('orderModal').style.display = 'none';
   document.getElementById('orderForm').reset();
 }
 
-// Update total price when quantity changes
 document.addEventListener('DOMContentLoaded', function() {
   const quantityInput = document.getElementById('order_quantity');
   if (quantityInput) {
@@ -872,7 +1061,6 @@ function updateOrderTotal() {
   document.getElementById('order_total_price').textContent = total.toFixed(2);
 }
 
-// Handle order form submission
 document.addEventListener('DOMContentLoaded', function() {
   const orderForm = document.getElementById('orderForm');
   if (orderForm) {
@@ -891,7 +1079,6 @@ document.addEventListener('DOMContentLoaded', function() {
       const notes = document.getElementById('order_notes').value.trim();
       const minOrder = parseFloat(document.getElementById('order_min').textContent);
       
-      // Validation
       if (quantity < minOrder) {
         alert(`Minimum order quantity is ${minOrder}`);
         submitBtn.disabled = false;
@@ -939,9 +1126,6 @@ document.addEventListener('DOMContentLoaded', function() {
             `The supplier will review your order shortly.`
           );
           closeOrderModal();
-          
-          // Optionally redirect to orders page
-          // window.location.href = '/vendor/orders/';
         } else {
           alert(`❌ Order Failed:\n${data.error}`);
         }
@@ -956,7 +1140,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// Helper function to get CSRF token
 function getCookie(name) {
   let cookieValue = null;
   if (document.cookie && document.cookie !== '') {
@@ -977,7 +1160,6 @@ function viewOnMap(lat, lng) {
   window.open(mapUrl, '_blank');
 }
 
-// Real-time search
 document.getElementById('searchItem')?.addEventListener('input', function() {
   const searchTerm = this.value.toLowerCase();
   document.querySelectorAll('.item-block').forEach(block => {
@@ -986,7 +1168,6 @@ document.getElementById('searchItem')?.addEventListener('input', function() {
   });
 });
 
-// Close modal when clicking outside
 window.onclick = function(event) {
   const modal = document.getElementById('orderModal');
   if (event.target == modal) {
@@ -994,151 +1175,6 @@ window.onclick = function(event) {
   }
 }
 </script>
-<!-- Order Modal -->
-<!-- Order Modal - Add this BEFORE </body> -->
-<div id="orderModal" class="modal" style="display: none;">
-  <div class="modal-content" style="max-width: 600px;">
-    <div class="modal-header">
-      <h2><i class="fas fa-shopping-cart"></i> Place Order</h2>
-      <span class="close" onclick="closeOrderModal()">&times;</span>
-    </div>
-    <div class="modal-body">
-      <form id="orderForm">
-        <input type="hidden" id="order_supplier_product_id">
-        <input type="hidden" id="order_unit_price">
-        
-        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-          <h3 style="margin: 0 0 10px 0; color: #2c3e50;">Order Details</h3>
-          <p style="margin: 5px 0;"><strong>Product:</strong> <span id="order_product_name"></span></p>
-          <p style="margin: 5px 0;"><strong>Supplier:</strong> <span id="order_supplier_name"></span></p>
-          <p style="margin: 5px 0;"><strong>Unit Price:</strong> ₹<span id="order_price"></span>/<span id="order_unit"></span></p>
-          <p style="margin: 5px 0;"><strong>Available Stock:</strong> <span id="order_stock"></span> <span id="order_unit2"></span></p>
-          <p style="margin: 5px 0;"><strong>Minimum Order:</strong> <span id="order_min"></span> <span id="order_unit3"></span></p>
-        </div>
 
-        <div style="margin-bottom: 15px;">
-          <label style="display: block; margin-bottom: 5px; font-weight: 600;">
-            <i class="fas fa-box"></i> Quantity (<span id="order_unit4"></span>):*
-          </label>
-          <input type="number" id="order_quantity" step="0.01" min="0.01" required
-                 style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px;"
-                 placeholder="Enter quantity">
-          <small style="color: #666;">Minimum order: <span id="order_min2"></span></small>
-        </div>
-
-        <div style="margin-bottom: 15px;">
-          <label style="display: block; margin-bottom: 5px; font-weight: 600;">
-            <i class="fas fa-map-marker-alt"></i> Delivery Address:*
-          </label>
-          <textarea id="order_address" rows="3" required
-                    style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px;"
-                    placeholder="Enter complete delivery address"></textarea>
-        </div>
-
-        <div style="margin-bottom: 15px;">
-          <label style="display: block; margin-bottom: 5px; font-weight: 600;">
-            <i class="fas fa-phone"></i> Contact Phone:*
-          </label>
-          <input type="tel" id="order_phone" required
-                 style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px;"
-                 placeholder="Enter contact number">
-        </div>
-
-        <div style="margin-bottom: 15px;">
-          <label style="display: block; margin-bottom: 5px; font-weight: 600;">
-            <i class="fas fa-calendar"></i> Expected Delivery Date:
-          </label>
-          <input type="date" id="order_delivery_date"
-                 style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px;">
-        </div>
-
-        <div style="margin-bottom: 20px;">
-          <label style="display: block; margin-bottom: 5px; font-weight: 600;">
-            <i class="fas fa-comment"></i> Additional Notes:
-          </label>
-          <textarea id="order_notes" rows="2"
-                    style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px;"
-                    placeholder="Any special instructions or requirements"></textarea>
-        </div>
-
-        <div style="background: #e8f4f8; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-          <h3 style="margin: 0 0 10px 0; color: #2c3e50;">Order Summary</h3>
-          <p style="margin: 5px 0; font-size: 18px;">
-            <strong>Total Amount: ₹<span id="order_total_price">0.00</span></strong>
-          </p>
-        </div>
-
-        <div style="display: flex; gap: 10px;">
-          <button type="button" onclick="closeOrderModal()" 
-                  style="flex: 1; padding: 12px; background: #95a5a6; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer;">
-            Cancel
-          </button>
-          <button type="submit" id="submitOrderBtn"
-                  style="flex: 2; padding: 12px; background: linear-gradient(135deg, #27ae60 0%, #229954 100%); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer;">
-            <i class="fas fa-check"></i> Confirm Order
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<style>
-.modal {
-  position: fixed;
-  z-index: 2000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.6);
-  overflow-y: auto;
-}
-
-.modal-content {
-  background-color: #fff;
-  margin: 3% auto;
-  border-radius: 15px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-  animation: slideDown 0.3s ease;
-}
-
-@keyframes slideDown {
-  from { transform: translateY(-50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.modal-header {
-  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-  color: white;
-  padding: 20px 25px;
-  border-radius: 15px 15px 0 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.modal-header h2 {
-  margin: 0;
-  font-size: 1.5em;
-}
-
-.modal-header .close {
-  color: white;
-  font-size: 32px;
-  font-weight: bold;
-  cursor: pointer;
-  line-height: 1;
-  transition: transform 0.2s;
-}
-
-.modal-header .close:hover {
-  transform: rotate(90deg);
-}
-
-.modal-body {
-  padding: 25px;
-}
-</style>
 </body>
 </html>
