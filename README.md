@@ -3,43 +3,44 @@
 
 
 
-##🚚🌶️ VendorConnect
+🚚🌶️ VendorConnect
 
 VendorConnect is a full-stack web platform built to empower India’s street food vendors by connecting them directly with trusted and affordable raw material suppliers.
 By eliminating middlemen, VendorConnect ensures fair pricing, transparency, and sustainable growth for small-scale businesses.
 
-##🌟 Key Features
-##👨‍🍳 For Vendors
+🌟 Key Features
 
-##🔍 Find Verified Suppliers — discover trusted suppliers nearby using Google Maps integration
+👨‍🍳 For Vendors
 
-##💸 Compare Prices — check and compare rates from multiple suppliers in real time
+🔍 Find Verified Suppliers — discover trusted suppliers nearby using Google Maps integration
 
-##🛒 Place Bulk Orders — directly order raw materials in bulk with a few clicks
+💸 Compare Prices — check and compare rates from multiple suppliers in real time
 
-##💳 Secure Payments — integrated Razorpay gateway for seamless online transactions
+🛒 Place Bulk Orders — directly order raw materials in bulk with a few clicks
 
-##🔔 Smart Notifications — get instant updates on new offers, price changes, and order status
+💳 Secure Payments — integrated Razorpay gateway for seamless online transactions
 
-##⭐ Read & Write Reviews — share and explore authentic supplier feedback
+🔔 Smart Notifications — get instant updates on new offers, price changes, and order status
 
-##📊 Track Orders & Prices — monitor purchases and view market price trends
+⭐ Read & Write Reviews — share and explore authentic supplier feedback
 
-##🏭 For Suppliers
+📊 Track Orders & Prices — monitor purchases and view market price trends
 
-##📦 List & Manage Products — add, update, or remove items with real-time pricing control
+🏭 For Suppliers
 
-##📈 Expand Reach — reach verified vendors through automated recommendation features
+📦 List & Manage Products — add, update, or remove items with real-time pricing control
 
-##💬 Direct Chat — communicate instantly with vendors for quotes and inquiries
+📈 Expand Reach — reach verified vendors through automated recommendation features
 
-##📍 Set Delivery Zones — define delivery areas via map-based zone selection
+💬 Direct Chat — communicate instantly with vendors for quotes and inquiries
 
-##🔔 Vendor Alerts — receive notifications when vendors inquire or place new orders
+📍 Set Delivery Zones — define delivery areas via map-based zone selection
 
-##🧠 Real-World Problems Solved
+🔔 Vendor Alerts — receive notifications when vendors inquire or place new orders
 
-##Street food vendors in India often face:
+🧠 Real-World Problems Solved
+
+Street food vendors in India often face:
 
 ❌ Unreliable or inconsistent suppliers
 
@@ -51,15 +52,15 @@ By eliminating middlemen, VendorConnect ensures fair pricing, transparency, and 
 
 VendorConnect digitizes and automates the supply chain — enabling real-time discovery, secure payments, and transparent business interactions between vendors and suppliers.
 
-##🛠️ Tech Stack
+🛠️ Tech Stack
 Layer	Technology
 Frontend	->HTML, CSS, JavaScript
 Backend	 ->Django, Django REST Framework
 APIs & Integrations	-> Maps API, Razorpay API
 Database	->SQLite
+Version Control	->Git & GitHub
 
-Version Control	Git & GitHub
-##🚀 Future Scope
+🚀 Future Scope
 
 🤖 AI-Powered Vendor–Supplier Matching — personalized recommendations based on pricing and reliability
 
@@ -69,7 +70,7 @@ Version Control	Git & GitHub
 
 🧾 Collaborative Bulk Orders — allow vendors to team up for shared deals and discounts
 
-##💡 Vision
+💡 Vision
 
 To create a transparent, tech-driven, and inclusive digital marketplace that empowers local vendors, simplifies sourcing, and strengthens India’s street food ecosystem.
 
