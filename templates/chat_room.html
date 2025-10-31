@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vendor Chat</title>
+<style>
+html, body { height:100%; margin:0; font-family: Arial; background:#f2f2f2; }
+.container { display:flex; height:100vh; max-width:1200px; margin:0 auto; background:#fff; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.2); overflow:hidden; }
+#chat-list { width:30%; border-right:1px solid #ccc; overflow-y:auto; background:#f9f9f9; }
+.chat-user { padding:15px; border-bottom:1px solid #eee; cursor:pointer; }
+.chat-user:hover { background:#f0f0f0; }
+.chat-user.active { background:#e6f7ff; }
+.chat-user-name { font-weight:600; color:#333; }
+.chat-user-email { font-size:0.85em; color:#666; }
+.chat-area { width:70%; display:flex; flex-direction:column; }
+#top-select { padding:10px; border-bottom:1px solid #ccc; background:#f8f8f8; }
+#chat-box { flex:1; padding:15px; overflow-y:auto; background:#fafafa; }
+.message { max-width:70%; padding:8px 12px; margin:5px 0; border-radius:20px; word-wrap:break-word; }
+.sent { background:#dcf8c6; margin-left:auto; text-align:right; }
+.received { background:#fff; border:1px solid #ddd; margin-right:auto; }
+.input-area { display:flex; padding:10px; border-top:1px solid #ccc; }
+#message-input { flex:1; padding:10px; border-radius:20px; border:1px solid #ccc; font-size:16px; }
+#send-btn { padding:10px 15px; margin-left:10px; border-radius:20px; border:none; background:#4CAF50; color:#fff; font-size:16px; cursor:pointer; }
+#send-btn:hover { background:#45a049; }
+.error-message { padding:15px; text-align:center; color:red; }
+.no-users { padding:15px; text-align:center; color:#999; }
+</style>
+</head>
+<body>
+<div class="container">
+
+    <div id="chat-list"></div>
+
+    <div class="chat-area">
+        <div id="top-select">
+            <label for="user-select">Select User to Chat:</label>
+            <select id="user-select">
+                <option value="">-- Select a user --</option>
+            </select>
+        </div>
+
+        <div id="chat-box"></div>
+
+        <div class="input-area">
+            <input type="text" id="message-input" placeholder="Type a message...">
+            <button id="send-btn">Send</button>
+        </div>
+    </div>
+</div>
+<script>
+const chatListDiv = document.getElementById("chat-list");
+const chatBox = document.getElementById("chat-box");
+const messageInput = document.getElementById("message-input");
+const sendBtn = document.getElementById("send-btn");
+const userSelect = document.getElementById("user-select");
+const userEmail = "{{ user.username }}";
+const currentUserId = "{{ user.id }}";
+let selectedUserId = null;
+let selectedUserName = null;
+let ws = null;
+
+function addMessage(sender, senderName, text, senderId){
+    const div = document.createElement("div");
+    div.classList.add("message");
+    
+    // Check if message is from current user
+    if(senderId == currentUserId || sender === userEmail){
+        div.classList.add("sent");
+        div.textContent = text;
+    } else {
+        div.classList.add("received");
+        div.textContent = senderName + ": " + text;
+    }
+    
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function loadUsers(){
+    console.log("Loading users...");
+    
+    // Use the correct URL path
+    fetch('/chat/users/')
+    .then(res => {
+        console.log("Response status:", res.status);
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+    })
+    .then(data => {
+        console.log("Users data:", data);
+        
+        userSelect.innerHTML = '<option value="">-- Select a user --</option>';
+        chatListDiv.innerHTML = '';
+        
+        if(!data.users || data.users.length === 0){
+            chatListDiv.innerHTML = '<div class="no-users">No users available to chat with</div>';
+            return;
+        }
+        
+        data.users.forEach(user => {
+            // Add to dropdown
+            const option = document.createElement("option");
+            option.value = user.id;
+            option.textContent = `${user.name} (${user.email})`;
+            userSelect.appendChild(option);
+
+            // Add to chat list
+            const div = document.createElement("div");
+            div.classList.add("chat-user");
+            div.dataset.userId = user.id;
+            div.dataset.userName = user.name;
+            div.dataset.userEmail = user.email;
+            
+            div.innerHTML = `
+                <div class="chat-user-name">${user.name || user.username}</div>
+                <div class="chat-user-email">${user.email}</div>
+            `;
+            
+            div.addEventListener("click", () => selectUser(user.id, user.name || user.username, div));
+            chatListDiv.appendChild(div);
+        });
+    })
+    .catch(err => {
+        console.error("Error loading users:", err);
+        chatListDiv.innerHTML = '<div class="error-message">Error loading users. Please refresh the page.</div>';
+    });
+}
+
+function selectUser(userId, userName, div){
+    console.log("Selecting user:", userId, userName);
+    
+    selectedUserId = userId;
+    selectedUserName = userName;
+    
+    document.querySelectorAll(".chat-user").forEach(d => d.classList.remove("active"));
+    if(div) div.classList.add("active");
+    userSelect.value = userId;
+
+    // Load chat history
+    fetch(`/chat/history/${userId}/`)
+    .then(res => {
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+    })
+    .then(data => {
+        console.log("Chat history:", data);
+        chatBox.innerHTML = '';
+        
+        if(data.messages && data.messages.length > 0) {
+            data.messages.forEach(msg => {
+                addMessage(msg.sender, msg.sender, msg.text, msg.sender_id);
+            });
+        } else {
+            chatBox.innerHTML = '<div style="padding:15px;text-align:center;color:#999;">No messages yet. Start the conversation!</div>';
+        }
+    })
+    .catch(err => {
+        console.error("Error loading chat history:", err);
+        chatBox.innerHTML = '<div class="error-message">Error loading messages</div>';
+    });
+
+    // Close existing WebSocket if any
+    if(ws) {
+        ws.close();
+    }
+    
+    // Create new WebSocket connection
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = `${protocol}//${window.location.host}/ws/chat/${userId}/`;
+    console.log("Connecting to WebSocket:", wsUrl);
+    
+    ws = new WebSocket(wsUrl);
+    
+    ws.onopen = function(e) {
+        console.log("WebSocket connected");
+    };
+    
+    ws.onmessage = function(e) {
+        console.log("WebSocket message received:", e.data);
+        const data = JSON.parse(e.data);
+        addMessage(data.sender, data.sender, data.message, data.sender_id);
+    };
+    
+    ws.onerror = function(e) {
+        console.error("WebSocket error:", e);
+    };
+    
+    ws.onclose = function(e) {
+        console.log("WebSocket disconnected");
+    };
+}
+
+userSelect.addEventListener("change", () => {
+    const userId = userSelect.value;
+    if(!userId) return;
+    const div = Array.from(document.querySelectorAll(".chat-user")).find(d => d.dataset.userId == userId);
+    if(div) {
+        const userName = div.dataset.userName;
+        selectUser(userId, userName, div);
+    }
+});
+
+// Send a message
+sendBtn.addEventListener("click", sendMessage);
+messageInput.addEventListener("keypress", function(e) {
+    if(e.key === "Enter") {
+        sendMessage();
+    }
+});
+
+function sendMessage() {
+    const message = messageInput.value.trim();
+    if (!message) return;
+    if (!selectedUserId) {
+        alert("Please select a user first");
+        return;
+    }
+    
+    if(!ws || ws.readyState !== WebSocket.OPEN) {
+        alert("Connection not ready. Please try again.");
+        return;
+    }
+
+    console.log("Sending message:", message);
+    
+    // Send via WebSocket
+    ws.send(JSON.stringify({
+        "message": message,
+        "receiver_id": selectedUserId
+    }));
+
+    messageInput.value = "";
+}
+
+// Load users on page load
+console.log("Page loaded, loading users...");
+loadUsers();
+</script>
+</body>
+</html>

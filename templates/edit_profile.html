@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile - VendorConnect</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #fdf5e6 0%, #e3dcea 100%);
+    color: #2d3748;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 280px;
+    background: linear-gradient(180deg, #1e3a5f 0%, #2c5282 100%);
+    padding: 0;
+    height: 100vh;
+    position: fixed;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+    z-index: 1000;
+    overflow-y: auto;
+  }
+
+  .sidebar h2 {
+    color: #fff;
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #e2e8f0;
+    text-decoration: none;
+    padding: 16px 25px;
+    margin: 6px 15px;
+    border-radius: 10px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sidebar a i {
+    font-size: 1.1em;
+    min-width: 22px;
+    text-align: center;
+  }
+
+  .sidebar a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: #60a5fa;
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar a:hover {
+    background-color: rgba(96, 165, 250, 0.15);
+    transform: translateX(5px);
+    color: #fff;
+  }
+
+  .sidebar a:hover::before {
+    transform: scaleY(1);
+  }
+
+  .sidebar a.active {
+    background: rgba(96, 165, 250, 0.2);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(96, 165, 250, 0.3);
+  }
+
+  .sidebar a.active::before {
+    transform: scaleY(1);
+  }
+
+  /* Main content */
+  .main {
+    margin-left: 280px;
+    padding: 40px;
+    width: calc(100% - 280px);
+    animation: fadeIn 0.6s ease;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Page Header */
+  .page-header {
+    background: linear-gradient(135deg, #ffffff 0%, #f7fafc 100%);
+    padding: 30px 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    margin-bottom: 30px;
+    border: 1px solid rgba(255,255,255,0.8);
+  }
+
+  .page-title {
+    font-size: 2em;
+    font-weight: 700;
+    color: #1a365d;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 0;
+  }
+
+  .page-title i {
+    color: #3182ce;
+  }
+
+  /* Edit Card */
+  .edit-card {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border: 1px solid #e2e8f0;
+    max-width: 900px;
+    margin: 0 auto;
+    animation: slideUp 0.5s ease;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .edit-card h2 {
+    color: #2c5282;
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+
+  .edit-card .subtitle {
+    text-align: center;
+    color: #718096;
+    margin-bottom: 35px;
+    font-size: 0.95rem;
+  }
+
+  /* Form Section Headers */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 30px 0 20px 0;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e2e8f0;
+    color: #2c5282;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  .section-header i {
+    color: #3182ce;
+    font-size: 1.2em;
+  }
+
+  .section-header:first-of-type {
+    margin-top: 0;
+  }
+
+  form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .form-group.full-width {
+    grid-column: span 2;
+  }
+
+  label {
+    font-weight: 600;
+    color: #4a5568;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  label i {
+    color: #718096;
+    font-size: 0.9em;
+  }
+
+  input, select {
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    background-color: #f7fafc;
+    font-size: 1rem;
+    color: #2d3748;
+    transition: all 0.3s ease;
+    outline: none;
+  }
+
+  input:focus, select:focus {
+    border-color: #3182ce;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+    transform: translateY(-1px);
+  }
+
+  input[type="file"] {
+    padding: 10px 16px;
+    cursor: pointer;
+  }
+
+  input[type="file"]::-webkit-file-upload-button {
+    background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+  }
+
+  input[type="file"]::-webkit-file-upload-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+  }
+
+  .password-section {
+    grid-column: span 2;
+    margin-top: 10px;
+    padding-top: 30px;
+    border-top: 2px dashed #e2e8f0;
+  }
+
+  .button-group {
+    grid-column: span 2;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  button {
+    background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);
+    color: #fff;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(49, 130, 206, 0.4);
+  }
+
+  button:active {
+    transform: translateY(0);
+  }
+
+  .helper-text {
+    font-size: 0.85rem;
+    color: #718096;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .helper-text i {
+    color: #3182ce;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .sidebar {
+      width: 80px;
+    }
+
+    .sidebar h2 span {
+      display: none;
+    }
+
+    .sidebar a span {
+      display: none;
+    }
+
+    .sidebar a {
+      justify-content: center;
+    }
+
+    .main {
+      margin-left: 80px;
+      width: calc(100% - 80px);
+    }
+
+    form {
+      grid-template-columns: 1fr;
+    }
+
+    .form-group.full-width,
+    .button-group,
+    .password-section {
+      grid-column: span 1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      padding: 15px;
+    }
+
+    .sidebar h2 {
+      display: none;
+    }
+
+    .main {
+      margin-left: 0;
+      width: 100%;
+      padding: 20px;
+    }
+
+    .edit-card {
+      padding: 25px;
+    }
+
+    .page-header {
+      padding: 20px;
+    }
+
+    .page-title {
+      font-size: 1.5em;
+    }
+
+    form {
+      grid-template-columns: 1fr;
+    }
+
+    .button-group {
+      flex-direction: column;
+    }
+
+    button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+  }
+</style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2><i class="fas fa-store"></i> <span>VendorConnect</span></h2>
+    <a href="{% url 'suppliers-dashboard' %}"><i class="fas fa-home"></i> <span>Dashboard</span></a>
+    <a href="{% url 'view_profile' %}"><i class="fas fa-user"></i> <span>View Profile</span></a>
+    <a href="{% url 'edit_profile' %}" class="active"><i class="fas fa-edit"></i> <span>Edit Profile</span></a>
+    <a href="{% url 'index' %}"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+  </div>
+
+  <!-- Main content -->
+  <div class="main">
+    <div class="page-header">
+      <h1 class="page-title"><i class="fas fa-user-edit"></i> Edit Profile</h1>
+    </div>
+
+    <div class="edit-card">
+      <h2>Update Your Information</h2>
+      <p class="subtitle">Keep your profile information up to date</p>
+      
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="section-header full-width">
+          <i class="fas fa-user-circle"></i>
+          Personal Information
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-signature"></i> First Name</label>
+          <input type="text" name="first_name" value="{{ user.first_name }}" required>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-signature"></i> Last Name</label>
+          <input type="text" name="last_name" value="{{ user.last_name }}" required>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-envelope"></i> Email Address</label>
+          <input type="email" name="email" value="{{ user.email }}" required>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-phone"></i> Phone Number</label>
+          <input type="text" name="phone_number" value="{{ user.phone_number|default_if_none:'' }}" placeholder="+91 XXXXXXXXXX">
+        </div>
+
+        <div class="form-group full-width">
+          <label><i class="fas fa-image"></i> Profile Picture</label>
+          <input type="file" name="profile_picture" accept="image/*">
+          <p class="helper-text"><i class="fas fa-info-circle"></i> Recommended: Square image, at least 200x200px</p>
+        </div>
+
+        <div class="section-header full-width">
+          <i class="fas fa-building"></i>
+          Business Details
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-store"></i> Business Name</label>
+          <input type="text" name="business_name" value="{{ profile.business_name|default_if_none:'' }}" placeholder="Your Business Name">
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-briefcase"></i> Business Type</label>
+          <input type="text" name="business_type" value="{{ profile.business_type|default_if_none:'' }}" placeholder="e.g., Retailer, Wholesaler">
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-file-invoice"></i> GST Number</label>
+          <input type="text" name="gst_number" value="{{ profile.gst_number|default_if_none:'' }}" placeholder="GST Number (Optional)">
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-id-card"></i> PAN Number</label>
+          <input type="text" name="pan_number" value="{{ profile.pan_number|default_if_none:'' }}" placeholder="PAN Number (Optional)">
+        </div>
+
+        <div class="password-section">
+          <div class="section-header">
+            <i class="fas fa-lock"></i>
+            Change Password
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+            <div class="form-group">
+              <label><i class="fas fa-key"></i> New Password</label>
+              <input type="password" name="new_password" placeholder="Leave blank to keep current">
+              <p class="helper-text"><i class="fas fa-info-circle"></i> Minimum 8 characters</p>
+            </div>
+
+            <div class="form-group">
+              <label><i class="fas fa-key"></i> Confirm New Password</label>
+              <input type="password" name="confirm_password" placeholder="Confirm new password">
+            </div>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button type="submit">
+            <i class="fas fa-save"></i>
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

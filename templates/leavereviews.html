@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leave a Review</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg,rgb(218, 218, 220) 0%,rgb(213, 213, 213) 100%);
+  min-height: 100vh;
+  display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+  height: 100vh;
+  width: 260px;
+  background-color: #2c3e50;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0;
+  position: fixed;
+  box-shadow: 4px 0 15px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+
+.sidebar-header {
+  padding: 0 20px 30px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 20px;
+}
+
+.sidebar-header h2 {
+  color: #fff;
+  font-size: 1.4em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-header h2 i {
+  color: #3498db;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  padding: 15px 25px;
+  text-decoration: none;
+  color: #ecf0f1;
+  font-weight: 500;
+  margin: 5px 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.sidebar a i {
+  margin-right: 12px;
+  min-width: 20px;
+  text-align: center;
+  font-size: 1.1em;
+}
+
+.sidebar a:hover {
+  background-color: rgba(52, 152, 219, 0.2);
+  transform: translateX(5px);
+}
+
+.sidebar a.active {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  padding: 40px 20px;
+}
+
+/* Container inside main content */
+.container {
+  max-width: 900px;
+  
+  margin: auto;
+  background: #fff;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+/* Header */
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #2c3e50;
+  font-size: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+h1 i {
+  color: #f39c12;
+}
+
+/* Messages */
+.message {
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.message.success {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  color: #155724;
+  border-left: 4px solid #28a745;
+}
+
+.message.error {
+  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+  color: #721c24;
+  border-left: 4px solid #dc3545;
+}
+
+.message.warning {
+  background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+  color: #856404;
+  border-left: 4px solid #ffc107;
+}
+
+.message i {
+  font-size: 1.3em;
+}
+
+/* Form styling */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+label {
+  font-weight: 600;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+label i {
+  color: #667eea;
+  width: 20px;
+}
+
+.required {
+  color: #e74c3c;
+}
+
+select, input, textarea {
+  padding: 12px 15px;
+  border-radius: 10px;
+  border: 2px solid #e0e0e0;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+select:focus, input:focus, textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+select {
+  cursor: pointer;
+  background: white;
+}
+
+/* Rating */
+.rating-container {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 10px;
+}
+
+.star-rating {
+  display: flex;
+  gap: 5px;
+  font-size: 2em;
+}
+
+.star-rating i {
+  color: #ddd;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.star-rating i:hover,
+.star-rating i.active {
+  color: #f39c12;
+  transform: scale(1.1);
+}
+
+.rating-text {
+  font-weight: 600;
+  color: #7f8c8d;
+}
+
+/* Order info */
+.order-info {
+  display: none;
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 10px;
+  border-left: 4px solid #667eea;
+}
+
+.order-info.show {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.order-info h4 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+  font-size: 1.1em;
+}
+
+.order-info p {
+  color: #555;
+  margin: 5px 0;
+}
+
+/* Buttons */
+button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: 'Poppins', sans-serif;
+  margin-top: 10px;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Loading & Empty state */
+.loading {
+  text-align: center;
+  padding: 20px;
+  color: #7f8c8d;
+}
+
+.loading i {
+  font-size: 2em;
+  animation: spin 1s linear infinite;
+  color: #667eea;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #7f8c8d;
+}
+
+.empty-state i {
+  font-size: 4em;
+  margin-bottom: 20px;
+  color: #bdc3c7;
+}
+
+.empty-state h3 {
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 220px;
+  }
+  .main-content {
+    margin-left: 220px;
+    width: calc(100% - 220px);
+    padding: 40px 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 15px 0;
+  }
+  
+  .sidebar-header {
+    display: none;
+  }
+  
+  .sidebar a {
+    margin: 0 10px;
+    white-space: nowrap;
+  }
+  
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+    padding: 20px;
+  }
+}
+
+    .settings-menu { margin-top: auto; position: relative; }
+    .settings-btn {
+      background: none; border: none; color: #fff;
+      font-size: 1rem; padding: 0.75rem 1rem; width: 100%;
+      text-align: left; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      border-radius: 6px;
+    }
+    .settings-btn:hover { background-color: #2d3e55; }
+    .dropdown {
+      display: flex; flex-direction: column;
+      background-color: #2d3e55; border-radius: 6px;
+      margin-top: 5px; overflow: hidden;
+    }
+    .dropdown a {
+      color: #fff; text-decoration: none; padding: 0.7rem 1rem;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .dropdown a:hover { background-color: #3c4e65; }
+    .dropdown.hidden { display: none; }
+    .arrow { transition: transform 0.3s ease; }
+    .rotate { transform: rotate(180deg); }
+
+</style>
+</head>
+<body>
+
+<!-- Vertical Sidebar Navbar -->
+<div class="sidebar">
+  <div class="sidebar-header">
+    <h2><i class="fas fa-store"></i> Vendor Portal</h2>
+  </div>
+  <a href="{% url 'findsuppliers' %}" class="{% if request.resolver_match.url_name == 'findsuppliers' %}active{% endif %}">
+    <i class="fas fa-search"></i> Find Suppliers
+  </a>
+  <a href="{% url 'compareprices' %}" class="{% if request.resolver_match.url_name == 'compareprices' %}{% endif %}">
+    <i class="fas fa-balance-scale"></i> Compare Prices
+  </a>
+  <a href="{% url 'bulk' %}" class="{% if request.resolver_match.url_name == 'bulk' %}{% endif %}">
+    <i class="fas fa-boxes"></i> Bulk Orders
+  </a>
+  <a href="{% url 'leavereviews' %}" class="{% if request.resolver_match.url_name == 'leavereviews' %}active{% endif %}">
+    <i class="fas fa-star"></i> Reviews
+  </a>
+  <a href="{% url 'orders' %}" class="nav-link"><i class="fas fa-clipboard-list"></i> My Orders</a>
+  <div class="settings-menu">
+      <button class="settings-btn">
+        <i class="fas fa-gear"></i> Settings <i class="fas fa-chevron-down arrow"></i>
+      </button>
+      <div class="dropdown hidden">
+        <a href="{% url 'view_profile' %}"><i class="fas fa-user"></i> View Profile</a>
+        <a href="{% url 'edit_profile' %}"><i class="fas fa-edit"></i> Edit Profile</a>
+        <a href="{% url 'index' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+  
+
+<div class="container">
+  <h1><i class="fas fa-star"></i> Leave a Review</h1>
+  
+  <!-- Django Messages -->
+  {% if messages %}
+    {% for message in messages %}
+    <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+      <i class="fas {% if 'success' in message.tags %}fa-check-circle{% elif 'error' in message.tags %}fa-exclamation-circle{% else %}fa-info-circle{% endif %}"></i>
+      {{ message }}
+    </div>
+    {% endfor %}
+  {% endif %}
+  {% for supplier in suppliers %}
+  <option value="{{ supplier.id }}">
+    {{ supplier.business_name }}
+    {% if supplier.id in suppliers_with_orders %}(You have orders){% endif %}
+  </option>
+{% endfor %}
+
+  <!-- Review Form -->
+  <form method="POST" action="{% url 'submit_review' %}" id="reviewForm">
+    {% csrf_token %}
+    
+    <div class="form-group">
+      <label for="supplier">
+        <i class="fas fa-industry"></i>
+        Select Supplier: <span class="required">*</span>
+      </label>
+      <select name="supplier" id="supplier" required>
+        <option value="">-- Choose Supplier --</option>
+        {% for supplier in suppliers %}
+        <option value="{{ supplier.id }}">{{ supplier.business_name }}</option>
+        {% endfor %}
+      </select>
+      {% if not suppliers %}
+      <div class="empty-state">
+        <i class="fas fa-inbox"></i>
+        <h3>No Suppliers Available</h3>
+        <p>You need to complete orders before leaving reviews</p>
+      </div>
+      {% endif %}
+      </div>
+    
+    
+
+    <div class="form-group">
+      <label for="rating">
+        <i class="fas fa-star"></i>
+        Rating: <span class="required">*</span>
+      </label>
+      <div class="rating-container">
+        <div class="star-rating" id="star-rating">
+          <i class="far fa-star" data-rating="1"></i>
+          <i class="far fa-star" data-rating="2"></i>
+          <i class="far fa-star" data-rating="3"></i>
+          <i class="far fa-star" data-rating="4"></i>
+          <i class="far fa-star" data-rating="5"></i>
+        </div>
+        <span class="rating-text" id="rating-text">Select rating</span>
+      </div>
+      <input type="hidden" name="rating" id="rating-input" required>
+    </div>
+
+    <div class="form-group">
+      <label for="comment">
+        <i class="fas fa-comment-dots"></i>
+        Your Review: <span class="required">*</span>
+      </label>
+      <textarea 
+        name="comment" 
+        id="comment" 
+        required 
+        placeholder="Share your experience with this supplier..."
+      ></textarea>
+    </div>
+
+    <button type="submit" id="submit-btn">
+      <i class="fas fa-paper-plane"></i>
+      Submit Review
+    </button>
+  </form>
+</div>
+
+<script>
+  // Settings dropdown
+  const btn = document.querySelector('.settings-btn');
+  const dropdown = document.querySelector('.dropdown');
+  const arrow = document.querySelector('.arrow');
+  btn.onclick = () => { dropdown.classList.toggle('hidden'); arrow.classList.toggle('rotate'); };
+
+// Star rating functionality
+const stars = document.querySelectorAll('.star-rating i');
+const ratingInput = document.getElementById('rating-input');
+const ratingText = document.getElementById('rating-text');
+
+stars.forEach(star => {
+  star.addEventListener('click', function() {
+    const rating = this.getAttribute('data-rating');
+    ratingInput.value = rating;
+    
+    // Update star display
+    stars.forEach(s => {
+      const starRating = s.getAttribute('data-rating');
+      if (starRating <= rating) {
+        s.classList.remove('far');
+        s.classList.add('fas', 'active');
+      } else {
+        s.classList.remove('fas', 'active');
+        s.classList.add('far');
+      }
+    });
+    
+    // Update text
+    const ratingTexts = ['', 'Poor', 'Fair', 'Good', 'Very Good', 'Excellent'];
+    ratingText.textContent = ratingTexts[rating] + ' (' + rating + '/5)';
+  });
+  
+  star.addEventListener('mouseenter', function() {
+    const rating = this.getAttribute('data-rating');
+    stars.forEach(s => {
+      const starRating = s.getAttribute('data-rating');
+      if (starRating <= rating) {
+        s.classList.add('active');
+      }
+    });
+  });
+});
+
+document.querySelector('.star-rating').addEventListener('mouseleave', function() {
+  const currentRating = ratingInput.value;
+  stars.forEach(s => {
+    const starRating = s.getAttribute('data-rating');
+    if (starRating > currentRating) {
+      s.classList.remove('active');
+    }
+  });
+});
+
+
+
+// Form validation
+document.getElementById('reviewForm').addEventListener('submit', function(e) {
+  const rating = ratingInput.value;
+  const comment = document.getElementById('comment').value.trim();
+  
+  if (!rating) {
+    e.preventDefault();
+    alert('Please select a rating');
+    return false;
+  }
+  
+  if (!comment) {
+    e.preventDefault();
+    alert('Please write a review comment');
+    return false;
+  }
+  
+  return true;
+});
+</script>
+</body>
+</html>

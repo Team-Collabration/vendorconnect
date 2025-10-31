@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Checkout</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+  <h2>Processing your payment...</h2>
+
+  <script>
+const options = {
+    key: "{{ razorpay_key }}",
+    amount: parseInt("{{ amount|default:0 }}"),
+    currency: "INR",
+    name: "VendorConnect",
+    description: "Signup Payment",
+    order_id: "{{ order_id }}",
+
+    // ✅ Add prefill to show phone number in popup
+    prefill: {
+        name: "{{ username|default:'' }}",
+        email: "{{ email|default:'' }}",
+        contact: "{{ phone_number|default:'' }}"  // ✅ Phone appears here
+    },
+
+    // Existing notes (optional for receipt)
+    notes: {
+        email: "{{ email|default:'' }}",
+        username: "{{ username|default:'' }}",
+        phone: "{{ phone_number|default:'' }}"  // ✅ Still there for receipt
+    },
+
+    handler: function(response) {
+        fetch("{% url 'payment_success' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: JSON.stringify({
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success){
+                window.location.href = data.redirect_url;
+            } else {
+                alert("❌ Payment Verification Failed!");
+            }
+        })
+        .catch(err => {
+            console.error("Payment error:", err);
+            alert("❌ Something went wrong. Please try again.");
+        });
+    },
+
+    theme: { color: "#3399cc" }
+};
+const rzp = new Razorpay(options);
+rzp.open();
+</script>
+
+</body>
+</html>

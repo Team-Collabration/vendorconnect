@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bulk Orders</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, beige 0%, rgb(225, 237, 246) 100%);
+  min-height: 100vh;
+  display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+  height: 100vh;
+  width: 260px;
+  background-color: #2c3e50;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0;
+  position: fixed;
+  box-shadow: 4px 0 15px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+
+.sidebar-header {
+  padding: 0 20px 30px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 20px;
+}
+
+.sidebar-header h2 {
+  color: #fff;
+  font-size: 1.4em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-header h2 i { color: #3498db; }
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  padding: 15px 25px;
+  text-decoration: none;
+  color: #ecf0f1;
+  font-weight: 500;
+  margin: 5px 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.sidebar a i { margin-right: 12px; min-width: 20px; text-align: center; font-size: 1.1em; }
+
+.sidebar a:hover { background-color: rgba(52, 152, 219, 0.2); transform: translateX(5px); }
+
+.sidebar a.active { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4); }
+
+/* Main Content */
+.main-content { margin-left: 260px; width: calc(100% - 260px); padding: 30px; }
+
+/* Header */
+header { background: #fff; color: #2c3e50; padding: 25px 30px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 30px; }
+
+header h1 { font-size: 2em; display: flex; align-items: center; gap: 15px; margin: 0; }
+header h1 i { color: #f39c12; }
+
+/* Container */
+.container { background: #fff; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); padding: 30px; margin-bottom: 30px; }
+
+/* Available Products Section */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.product-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border: 2px solid #e0e0e0;
+  border-radius: 15px;
+  padding: 25px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #3498db, #2ecc71);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover::before {
+  transform: scaleX(1);
+}
+
+.product-card:hover {
+  border-color: #3498db;
+  box-shadow: 0 8px 25px rgba(52, 152, 219, 0.2);
+  transform: translateY(-5px);
+}
+
+.product-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.product-card h3 {
+  color: #2c3e50;
+  font-size: 1.3em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.product-card h3 i {
+  color: #3498db;
+}
+
+.stock-badge {
+  background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.75em;
+  font-weight: 600;
+}
+
+.stock-badge.low {
+  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+}
+
+.supplier-info {
+  background: #f8f9fa;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 12px 0;
+}
+
+.supplier-info div {
+  color: #555;
+  font-size: 0.9em;
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.supplier-info i {
+  color: #3498db;
+  width: 18px;
+}
+
+.product-details {
+  margin: 15px 0;
+  padding: 15px 0;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  color: #555;
+  font-size: 0.95em;
+}
+
+.detail-label {
+  font-weight: 500;
+  color: #7f8c8d;
+}
+
+.detail-value {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.product-price {
+  font-size: 1.8em;
+  color: #27ae60;
+  font-weight: 700;
+  margin: 15px 0;
+  text-align: center;
+}
+
+.order-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  font-family: "Poppins", sans-serif;
+}
+
+.order-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+
+.order-btn:active {
+  transform: translateY(0);
+}
+
+.order-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Loading State */
+.loading {
+  text-align: center;
+  padding: 60px;
+  color: #7f8c8d;
+}
+
+.loading i {
+  font-size: 3em;
+  animation: spin 1s linear infinite;
+  color: #3498db;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #7f8c8d;
+}
+
+.empty-state i {
+  font-size: 5em;
+  margin-bottom: 20px;
+  color: #bdc3c7;
+}
+
+/* Alert Messages */
+.alert {
+  padding: 18px 25px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  display: none;
+  animation: slideIn 0.3s ease;
+  font-weight: 500;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.alert.success {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  color: #155724;
+  border-left: 4px solid #28a745;
+}
+
+.alert.error {
+  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+  color: #721c24;
+  border-left: 4px solid #dc3545;
+}
+
+.alert.show {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.alert i {
+  font-size: 1.3em;
+}
+
+/* Order Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  overflow-y: auto;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 3% auto;
+  max-width: 600px;
+  border-radius: 20px;
+  box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  padding: 25px 30px;
+  border-radius: 20px 20px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.6em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.close {
+  color: white;
+  font-size: 32px;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+  transition: all 0.3s ease;
+}
+
+.close:hover {
+  transform: rotate(90deg);
+}
+
+.modal-body {
+  padding: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8px;
+  color: #2c3e50;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: "Poppins", sans-serif;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-group small {
+  color: #7f8c8d;
+  font-size: 0.85em;
+  display: block;
+  margin-top: 5px;
+}
+
+.required {
+  color: #e74c3c;
+}
+
+.estimated-total {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  margin: 20px 0;
+  border: 2px dashed #3498db;
+}
+
+.estimated-total label {
+  display: block;
+  color: #7f8c8d;
+  font-size: 0.9em;
+  margin-bottom: 8px;
+}
+
+.estimated-total .amount {
+  font-size: 2em;
+  color: #27ae60;
+  font-weight: 700;
+}
+
+.modal-footer {
+  padding: 0 30px 30px;
+  display: flex;
+  gap: 15px;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.modal-btn.primary {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+}
+
+.modal-btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+
+.modal-btn.secondary {
+  background: #e0e0e0;
+  color: #555;
+}
+
+.modal-btn.secondary:hover {
+  background: #d0d0d0;
+}
+
+.modal-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 1024px) {
+  .sidebar { width: 220px; }
+  .main-content { margin-left: 220px; width: calc(100% - 220px); }
+  .products-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+}
+
+@media (max-width: 768px) {
+  .sidebar { width: 100%; height: auto; position: relative; flex-direction: row; overflow-x: auto; padding: 15px 0; }
+  .sidebar-header { display: none; }
+  .sidebar a { margin: 0 10px; white-space: nowrap; }
+  .main-content { margin-left: 0; width: 100%; padding: 20px; }
+  .products-grid { grid-template-columns: 1fr; }
+  .modal-content { margin: 5% 10px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Vertical Sidebar -->
+<div class="sidebar">
+  <div class="sidebar-header">
+    <h2><i class="fas fa-store"></i> Vendor Portal</h2>
+  </div>
+  <a href="{% url 'findsuppliers' %}" class="{% if request.resolver_match.url_name == 'findsuppliers' %}active{% endif %}"><i class="fas fa-search"></i> Find Suppliers</a>
+  <a href="{% url 'compareprices' %}" class="{% if request.resolver_match.url_name == 'compareprices' %}active{% endif %}"><i class="fas fa-balance-scale"></i> Compare Prices</a>
+  <a href="{% url 'bulk' %}" class="{% if request.resolver_match.url_name == 'bulk' %}active{% endif %}"><i class="fas fa-boxes"></i> Bulk Orders</a>
+  <a href="{% url 'leavereviews' %}" class="{% if request.resolver_match.url_name == 'leavereviews' %}active{% endif %}"><i class="fas fa-star"></i> Reviews</a>
+  <a href="{% url 'orders' %}" class="nav-link"><i class="fas fa-clipboard-list"></i> My Orders</a>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+  <header>
+    <h1><i class="fas fa-boxes"></i> Place Bulk Orders</h1>
+  </header>
+
+  <!-- Alert Messages -->
+  <div id="alertMessage" class="alert"></div>
+
+  <!-- Available Products Section -->
+  <div class="container">
+    <h2 style="margin-bottom: 20px; color: #2c3e50;"><i class="fas fa-box-open"></i> Available Products for Bulk Order</h2>
+    
+    <div id="loadingProducts" class="loading">
+      <i class="fas fa-spinner"></i>
+      <p style="margin-top: 15px; font-size: 1.1em;">Loading available products...</p>
+    </div>
+
+    <div id="productsGrid" class="products-grid" style="display: none;">
+      <!-- Products will be loaded here dynamically -->
+    </div>
+
+    <div id="noProducts" class="empty-state" style="display: none;">
+      <i class="fas fa-inbox"></i>
+      <h3 style="margin-bottom: 10px;">No Products Available</h3>
+      <p>Please check back later or contact suppliers directly</p>
+    </div>
+  </div>
+</div>
+
+<!-- Order Modal -->
+<div id="orderModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2><i class="fas fa-shopping-cart"></i> Place Order</h2>
+      <span class="close" onclick="closeOrderModal()">&times;</span>
+    </div>
+    <div class="modal-body">
+      <form id="orderForm">
+        <input type="hidden" id="selectedProductId">
+        
+        <div class="form-group">
+          <label>Product:</label>
+          <input type="text" id="productDisplay" readonly style="background: #f8f9fa; border-color: #d0d0d0;">
+        </div>
+
+        <div class="form-group">
+          <label for="quantity">Quantity: <span class="required">*</span></label>
+          <input type="number" id="quantity" name="quantity" min="1" step="0.01" required 
+                 placeholder="Enter quantity">
+          <small id="qtyConstraints"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Contact Phone: <span class="required">*</span></label>
+          <input type="tel" id="phone" name="phone" required 
+                 placeholder="Enter your phone number" pattern="[0-9]{10}">
+          <small>10-digit mobile number</small>
+        </div>
+
+        <div class="form-group">
+          <label for="deliveryAddress">Delivery Address: <span class="required">*</span></label>
+          <textarea id="deliveryAddress" name="deliveryAddress" required 
+                    placeholder="Enter complete delivery address with pincode"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="expectedDate">Expected Delivery Date:</label>
+          <input type="date" id="expectedDate" name="expectedDate">
+        </div>
+
+        <div class="estimated-total">
+          <label>Estimated Total Amount</label>
+          <div class="amount">₹ <span id="totalAmount">0.00</span></div>
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Special Instructions (Optional):</label>
+          <textarea id="notes" name="notes" rows="3" 
+                    placeholder="Any specific delivery instructions or packaging preferences?"></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="modal-btn secondary" onclick="closeOrderModal()">
+        <i class="fas fa-times"></i> Cancel
+      </button>
+      <button type="button" class="modal-btn primary" id="confirmOrderBtn" onclick="confirmOrder()">
+        <i class="fas fa-check"></i> Confirm Order
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+let availableProducts = [];
+let selectedProductData = null;
+
+// Load products on page load
+document.addEventListener('DOMContentLoaded', function() {
+  loadAvailableProducts();
+  setupQuantityListener();
+  setMinDate();
+});
+
+async function loadAvailableProducts() {
+  try {
+    const response = await fetch('/products/api/supplier-products/', {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    const data = await response.json();
+    
+    if (data.success && data.products && data.products.length > 0) {
+      availableProducts = data.products;
+      displayProducts(availableProducts);
+    } else {
+      showNoProducts();
+    }
+  } catch (error) {
+    console.error('Error loading products:', error);
+    showAlert('Failed to load products. Please refresh the page.', 'error');
+    showNoProducts();
+  }
+}
+
+function displayProducts(products) {
+  const grid = document.getElementById('productsGrid');
+  const loading = document.getElementById('loadingProducts');
+  
+  loading.style.display = 'none';
+  grid.style.display = 'grid';
+  
+  grid.innerHTML = products.map(product => {
+    const stockStatus = product.stock_quantity > 100 ? '' : 'low';
+    return `
+      <div class="product-card">
+        <div class="product-header">
+          <h3><i class="fas fa-box"></i> ${product.product_name}</h3>
+          <span class="stock-badge ${stockStatus}">
+            <i class="fas fa-cubes"></i> ${product.stock_quantity} ${product.unit}
+          </span>
+        </div>
+        
+        <div class="supplier-info">
+          <div><i class="fas fa-industry"></i> <strong>${product.supplier_name}</strong></div>
+          ${product.supplier_phone ? `<div><i class="fas fa-phone"></i> ${product.supplier_phone}</div>` : ''}
+        </div>
+        
+        <div class="product-details">
+          <div class="detail-item">
+            <span class="detail-label">Min. Order:</span>
+            <span class="detail-value">${product.minimum_order_quantity} ${product.unit}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Unit Price:</span>
+            <span class="detail-value">₹${parseFloat(product.price).toFixed(2)} / ${product.unit}</span>
+          </div>
+        </div>
+        
+        <div class="product-price">
+          ₹${parseFloat(product.price).toFixed(2)} <span style="font-size: 0.5em; color: #7f8c8d;">per ${product.unit}</span>
+        </div>
+        
+        <button class="order-btn" onclick="openOrderModal(${product.id})">
+          <i class="fas fa-shopping-cart"></i> Order Now
+        </button>
+      </div>
+    `;
+  }).join('');
+}
+
+function showNoProducts() {
+  document.getElementById('loadingProducts').style.display = 'none';
+  document.getElementById('noProducts').style.display = 'block';
+}
+
+function openOrderModal(productId) {
+  selectedProductData = availableProducts.find(p => p.id === productId);
+  
+  if (!selectedProductData) {
+    showAlert('Product not found', 'error');
+    return;
+  }
+  
+  // Populate modal
+  document.getElementById('selectedProductId').value = productId;
+  document.getElementById('productDisplay').value = 
+    `${selectedProductData.product_name} - ${selectedProductData.supplier_name}`;
+  
+  document.getElementById('quantity').min = selectedProductData.minimum_order_quantity;
+  document.getElementById('quantity').max = selectedProductData.stock_quantity;
+  document.getElementById('quantity').value = selectedProductData.minimum_order_quantity;
+  
+  document.getElementById('qtyConstraints').textContent = 
+    `Min: ${selectedProductData.minimum_order_quantity} ${selectedProductData.unit}, Max: ${selectedProductData.stock_quantity} ${selectedProductData.unit}`;
+  
+  // Calculate initial total
+  calculateTotal();
+  
+  // Show modal
+  document.getElementById('orderModal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeOrderModal() {
+  document.getElementById('orderModal').style.display = 'none';
+  document.body.style.overflow = 'auto';
+  document.getElementById('orderForm').reset();
+  selectedProductData = null;
+}
+
+function setupQuantityListener() {
+  document.getElementById('quantity').addEventListener('input', calculateTotal);
+}
+
+function calculateTotal() {
+  if (!selectedProductData) return;
+  
+  const quantity = parseFloat(document.getElementById('quantity').value) || 0;
+  const total = quantity * parseFloat(selectedProductData.price);
+  
+  document.getElementById('totalAmount').textContent = total.toFixed(2);
+}
+
+function setMinDate() {
+  const dateInput = document.getElementById('expectedDate');
+  const today = new Date();
+  today.setDate(today.getDate() + 1); // Minimum tomorrow
+  const minDate = today.toISOString().split('T')[0];
+  dateInput.min = minDate;
+}
+
+async function confirmOrder() {
+  if (!selectedProductData) {
+    showAlert('No product selected', 'error');
+    return;
+  }
+  
+  // Validate form
+  const form = document.getElementById('orderForm');
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+  }
+  
+  const quantity = parseFloat(document.getElementById('quantity').value);
+  const phone = document.getElementById('phone').value.trim();
+  const deliveryAddress = document.getElementById('deliveryAddress').value.trim();
+  const expectedDate = document.getElementById('expectedDate').value;
+  const notes = document.getElementById('notes').value.trim();
+  
+  // Validate quantity
+  if (quantity < selectedProductData.minimum_order_quantity) {
+    showAlert(`Minimum order quantity is ${selectedProductData.minimum_order_quantity} ${selectedProductData.unit}`, 'error');
+    return;
+  }
+  
+  if (quantity > selectedProductData.stock_quantity) {
+    showAlert(`Only ${selectedProductData.stock_quantity} ${selectedProductData.unit} available in stock`, 'error');
+    return;
+  }
+  
+  // Validate phone
+  if (!/^[0-9]{10}$/.test(phone)) {
+    showAlert('Please enter a valid 10-digit phone number', 'error');
+    return;
+  }
+  
+  const confirmBtn = document.getElementById('confirmOrderBtn');
+  confirmBtn.disabled = true;
+  confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Placing Order...';
+  
+  try {
+    const csrftoken = getCookie('csrftoken');
+    
+    console.log('Sending order request:', {
+      supplier_product_id: selectedProductData.id,
+      quantity: quantity,
+      phone: phone,
+      delivery_address: deliveryAddress,
+      expected_delivery_date: expectedDate || null,
+      notes: notes
+    });
+    
+    const response = await fetch('/api/create/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken
+      },
+      body: JSON.stringify({
+        supplier_product_id: selectedProductData.id,
+        quantity: quantity,
+        phone: phone,
+        delivery_address: deliveryAddress,
+        expected_delivery_date: expectedDate || null,
+        notes: notes
+      })
+    });
+    
+    const data = await response.json();
+    console.log('Order response:', data);
+    
+    if (data.success) {
+      closeOrderModal();
+      showAlert(`✅ Order placed successfully! Order ID: #${data.order.id}. You can track it in "My Orders" page.`, 'success');
+      
+      // Reload products to update stock
+      setTimeout(() => {
+        loadAvailableProducts();
+      }, 1500);
+      
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      showAlert(`❌ ${data.error || 'Failed to place order'}`, 'error');
+    }
+  } catch (error) {
+    console.error('Error placing order:', error);
+    showAlert('Failed to place order. Please try again.', 'error');
+  } finally {
+    confirmBtn.disabled = false;
+    confirmBtn.innerHTML = '<i class="fas fa-check"></i> Confirm Order';
+  }
+}
+
+function showAlert(message, type) {
+  const alert = document.getElementById('alertMessage');
+  alert.className = `alert ${type} show`;
+  
+  const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+  alert.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
+  
+  // Auto-hide after 8 seconds for success, 6 for error
+  const timeout = type === 'success' ? 8000 : 6000;
+  setTimeout(() => {
+    alert.classList.remove('show');
+  }, timeout);
+}
+
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+  const modal = document.getElementById('orderModal');
+  if (event.target == modal) {
+    closeOrderModal();
+  }
+}
+</script>
+
+</body>
+</html>

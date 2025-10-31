@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vendor Sign Up - VendorConnect</title>
+  {% load static %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: #f5f5dc; /* beige background */
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .signup-wrapper {
+      display: flex;
+      width: 100%;
+      max-width: 1200px;
+      background: white;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      min-height: 650px;
+    }
+
+    /* Left Side - Signup Form */
+    .signup-section {
+      flex: 1;
+      padding: 60px 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #f8f9fa;
+    }
+
+    .signup-section h2 {
+      font-size: 28px;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .signup-subtitle {
+      color: #718096;
+      font-size: 14px;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    form {
+      width: 100%;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #4a5568;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 15px;
+      font-family: 'Poppins', sans-serif;
+      background: white;
+      transition: all 0.3s ease;
+      margin-bottom: 16px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .otp-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .otp-section input {
+      flex: 1;
+      margin-bottom: 0;
+    }
+
+    .otp-section button {
+      flex-shrink: 0;
+      background-color: #667eea;
+      color: white;
+      border: none;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .otp-section button:hover {
+      background-color: rgb(32, 42, 171);
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #667eea 0%, rgb(25, 53, 192) 100%);
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    button[type="submit"]:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .divider {
+      text-align: center;
+      margin: 20px 0;
+      color: #555;
+    }
+
+    .g_id_signin {
+      display: flex;
+      justify-content: center;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 14px;
+      color: #4a5568;
+    }
+
+    .login-link a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .login-link a:hover {
+      color: rgb(32, 42, 171);
+    }
+
+.welcome-section {
+  flex: 1;
+  background: linear-gradient(135deg, #667eea 0%, rgb(24, 59, 136) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  position: relative;
+  /* overflow-y: auto;  <-- remove this */
+  text-align: center;
+  padding: 40px 20px;
+  /* max-height: 100vh; <-- remove this */
+  /* scroll-behavior: smooth; <-- optional */
+}
+
+
+
+    .circle-logo {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 30px;
+      border: 4px solid white;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+    }
+
+    .welcome-section h1 {
+      font-size: 42px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      line-height: 1.2;
+    }
+
+    .welcome-section p {
+      font-size: 18px;
+      font-weight: 300;
+      opacity: 0.95;
+      max-width: 400px;
+    }
+
+    @media (max-width: 968px) {
+      .signup-wrapper {
+        flex-direction: column;
+      }
+      .welcome-section {
+        order: -1;
+        min-height: 300px;
+      }
+      .welcome-section h1 {
+        font-size: 32px;
+      }
+    }
+    /* Position top part (logo and heading) */
+.welcome-top {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* Benefits container scroll area */
+.benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 10px 20px;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 450px;
+}
+
+/* Benefit cards */
+.benefit {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 20px;
+  border-radius: 14px;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  text-align: center;
+  transition: transform 0.6s ease, opacity 0.6s ease;
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.benefit i {
+  font-size: 30px;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.benefit h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* Reveal animation effect */
+.benefit.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Reveal animation effect */
+.benefit.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Scrollbar styling (optional) */
+.benefits::-webkit-scrollbar {
+  width: 6px;
+}
+.benefits::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.4);
+  border-radius: 6px;
+}
+
+  </style>
+</head>
+
+<body>
+  <div class="signup-wrapper">
+    <!-- Left Side -->
+    <div class="signup-section">
+      <h2><i class="fas fa-user-plus"></i> Vendor Sign Up</h2>
+      <p class="signup-subtitle">Create your account and start connecting with verified suppliers</p>
+
+      <form id="vendorSignupForm" action="{% url 'vendorsignup' %}" method="POST">
+        {% csrf_token %}
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Choose a username" required>
+
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="firstName" placeholder="Enter first name" required>
+
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" name="lastName" placeholder="Enter last name" required>
+
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" name="dob" required>
+
+        <label for="phone">Mobile Number</label>
+        <input type="tel" id="phone" name="phone" placeholder="+911234567890" required>
+
+        <label for="email">Email</label>
+        <div class="otp-section">
+          <input type="email" id="email" name="email" placeholder="Enter your email" required>
+          <button type="button" id="sendOtpBtn">Send OTP</button>
+        </div>
+
+        <label for="otp">Enter OTP</label>
+        <input type="text" id="otp" name="otp" placeholder="6-digit OTP" maxlength="6" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+
+        <button type="submit"><i class="fas fa-user-check"></i> Sign Up as Vendor</button>
+      </form>
+
+      <div class="divider">or</div>
+
+      <div id="g_id_onload"
+          data-client_id="1013464190681-ptkqjpjqh7v440t5fnv5aou116fmtb80.apps.googleusercontent.com"
+          data-callback="handleGoogleSignup"
+          data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin" data-type="standard"></div>
+
+      <p class="login-link">Already have an account? <a href="{% url 'vendorlogin' %}">Login here</a></p>
+    </div>
+
+<!-- Right Side -->
+<div class="welcome-section">
+  <div class="welcome-top">
+    <img src="{% static 'logo.jpg' %}" alt="VendorConnect Logo" class="circle-logo">
+    <h1>Join VendorConnect Today</h1>
+    <p>  Grow your business by connecting directly with trusted buyers and suppliers on one reliable platform.</p>
+  </div>
+
+  <div class="benefits">
+    <div class="benefit">
+      <i class="fas fa-handshake"></i>
+      <h3>Trusted Partnerships</h3>
+      <p>Work directly with verified suppliers and buyers across industries.</p>
+    </div>
+    <div class="benefit">
+      <i class="fas fa-bolt"></i>
+      <h3>Instant Connections</h3>
+      <p>Connect via WhatsApp and email instantly — no middlemen or delays.</p>
+    </div>
+    <div class="benefit">
+      <i class="fas fa-chart-line"></i>
+      <h3>Grow Faster</h3>
+      <p>Expand your reach and increase your profits through transparent deals.</p>
+    </div>
+    <div class="benefit">
+      <i class="fas fa-shield-alt"></i>
+      <h3>Secure Platform</h3>
+      <p>Your data and transactions are safe with VendorConnect’s verified network.</p>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script>
+document.addEventListener("DOMContentLoaded", function() {
+    const vendorForm = document.getElementById("vendorSignupForm");
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    vendorForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+        const csrf_token = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    const formData = new FormData(this);
+    const account_type = "{{ account_type|default:'vendor' }}"; // set dynamically in template
+    formData.append("account_type", account_type);
+
+    fetch("/accounts/create-payment/", {
+        method: "POST",
+        body: formData,
+        credentials: "same-origin" 
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.order_id) {
+            const options = {
+                key: data.key,
+                amount: data.amount,
+                currency: "INR",
+                name: "VendorConnect",
+                description: account_type.charAt(0).toUpperCase() + account_type.slice(1) + " Signup",
+                order_id: data.order_id,
+                handler: function(response) {
+                    fetch("/accounts/payment-success/", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": csrf_token 
+                        },
+                        body: JSON.stringify(response),
+                        credentials: "same-origin"
+                    })
+                    .then(res => res.json())
+                    .then(d => {
+                        if(d.success){
+                            window.location.href = d.redirect_url;
+                        } else {
+                            alert("Payment verified but something went wrong. Please contact support.");
+                        }
+                    })
+                },
+                modal: {
+                    ondismiss: function(){
+                        alert("Payment popup closed. Signup incomplete.");
+                    }
+                }
+            };
+            const rzp = new Razorpay(options);
+            rzp.open();
+        } else {
+            alert("Failed to initiate payment: " + (data.error || "Unknown error"));
+        }
+    })
+    .catch(err => console.error("Payment initiation error:", err));
+});
+});
+  
+  function handleGoogleSignup(response) {
+      fetch("/accounts/google-signup/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: "credential=" + encodeURIComponent(response.credential) + "&account_type=vendor"
+      })
+      .then(res => res.json())
+      .then(data => {
+          if (data.status === "success") {
+              window.location.href = data.redirect_url;
+          } else {
+              alert(data.error || "Google sign-in failed");
+          }
+      })
+      .catch(err => console.error("Google signup error:", err));
+  }
+
+  window.onload = function() {
+      if (typeof google !== "undefined" && document.querySelector(".g_id_signin")) {
+          google.accounts.id.initialize({
+              client_id: "1013464190681-ptkqjpjqh7v440t5fnv5aou116fmtb80.apps.googleusercontent.com",
+              callback: handleGoogleSignup
+          });
+          google.accounts.id.renderButton(
+              document.querySelector(".g_id_signin"),
+              { theme: "outline", size: "large" }
+          );
+      }
+  };
+// OTP logic
+  document.addEventListener("DOMContentLoaded", function() {
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+      let otpVerified = false;
+
+      document.getElementById("sendOtpBtn").addEventListener("click", () => {
+          const email = document.getElementById("email").value.trim();
+          if (!email) { alert("Enter a valid email."); return; }
+          fetch("{% url 'send_email_otp' %}", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded", "X-CSRFToken": csrftoken },
+              body: "email=" + encodeURIComponent(email)
+          })
+          .then(res => res.json())
+          .then(data => alert(data.message))
+          .catch(() => alert("Error sending OTP."));
+      });
+
+      document.getElementById("otp").addEventListener("blur", () => {
+          const email = document.getElementById("email").value.trim();
+          const otp = document.getElementById("otp").value.trim();
+          if (!otp) return;
+          fetch("{% url 'verify_email_otp' %}", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded", "X-CSRFToken": csrftoken },
+              body: "email=" + encodeURIComponent(email) + "&otp=" + encodeURIComponent(otp)
+          })
+          .then(res => res.json())
+          .then(data => {
+              otpVerified = data.status === "success";
+              alert(data.message);
+          });
+      });
+
+      document.getElementById("vendorSignupForm").addEventListener("submit", (e) => {
+          if (!otpVerified) {
+              e.preventDefault();
+              alert("Please verify OTP before submitting.");
+          }
+          const password = document.getElementById("password").value.trim();
+          const confirmPassword = document.getElementById("confirmPassword").value.trim();
+          if (password !== confirmPassword) {
+              e.preventDefault();
+              alert("Passwords do not match.");
+          }
+      });
+  });
+</script>
+  <script>
+  // Reveal animation inside .benefits
+  const reveals = document.querySelectorAll(".benefit");
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add("active");
+    });
+  }, { threshold: 0.2 });
+
+  reveals.forEach(b => observer.observe(b));
+</script>
+
+  
+</body>
+</html>

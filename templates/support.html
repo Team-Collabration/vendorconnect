@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Support & Help - VendorConnect</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  background: #f7f8fc;
+  color: #1a202c;
+  line-height: 1.6;
+}
+
+/* Sidebar */
+.sidebar-nav {
+  height: 100vh;
+  width: 260px;
+  background-color: #2c3e50;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 4px 0 15px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+
+.sidebar-header {
+  padding: 0 20px 30px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 20px;
+}
+
+.sidebar-header h2 {
+  color: #fff;
+  font-size: 1.4em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  padding: 15px 25px;
+  text-decoration: none;
+  color: #ecf0f1;
+  font-weight: 500;
+  margin: 5px 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.sidebar-nav a i {
+  margin-right: 12px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.sidebar-nav a:hover {
+  background-color: rgba(52, 152, 219, 0.2);
+  transform: translateX(5px);
+}
+
+.sidebar-nav a.active {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+}
+
+/* Main Content Area */
+.main-wrapper {
+  margin-left: 260px;
+  min-height: 100vh;
+}
+
+.top-banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px 20px;
+  text-align: center;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.top-banner i {
+  margin-right: 8px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.hero-section {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.hero-section h1 {
+  font-size: 2.5rem;
+  color: #1a202c;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.hero-section p {
+  font-size: 1.2rem;
+  color: #718096;
+  margin-bottom: 30px;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: all 0.3s;
+}
+
+.card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  transform: translateY(-4px);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f7fafc;
+}
+
+.card-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.card-header h2 {
+  font-size: 1.4rem;
+  color: #2d3748;
+  font-weight: 600;
+}
+
+.contact-methods {
+  display: grid;
+  gap: 15px;
+}
+
+.contact-method {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 20px;
+  background: #f7fafc;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+
+.contact-method:hover {
+  background: #edf2f7;
+  border-color: #667eea;
+  transform: translateX(5px);
+}
+
+.method-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  color: white;
+}
+
+.method-content h3 {
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+  color: #2d3748;
+}
+
+.method-content p {
+  color: #718096;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+
+.method-meta {
+  display: flex;
+  gap: 15px;
+  font-size: 0.85rem;
+  color: #a0aec0;
+}
+
+.method-meta span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.live-support {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.live-support h3 {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+}
+
+.live-support p {
+  margin-bottom: 20px;
+  opacity: 0.95;
+}
+
+.agent-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #48bb78;
+  animation: blink 2s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.btn-chat {
+  background: white;
+  color: #667eea;
+  width: 100%;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-chat:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.faq-item {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.faq-item:hover {
+  border-color: #667eea;
+}
+
+.faq-question {
+  padding: 18px 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  color: #2d3748;
+  transition: all 0.3s;
+  user-select: none;
+}
+
+.faq-question:hover {
+  background: #f7fafc;
+}
+
+.faq-question i {
+  color: #667eea;
+  transition: transform 0.3s;
+}
+
+.faq-item.active .faq-question i {
+  transform: rotate(180deg);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.4s ease-out;
+  color: #718096;
+  padding: 0 20px;
+}
+
+.faq-item.active .faq-answer {
+  max-height: 500px;
+  padding: 0 20px 18px;
+}
+
+footer {
+  background: #2d3748;
+  color: white;
+  padding: 40px 20px;
+  margin-top: 60px;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.footer-section h4 {
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.footer-section ul {
+  list-style: none;
+}
+
+.footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.footer-section a {
+  color: #cbd5e0;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-section a:hover {
+  color: white;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px solid #4a5568;
+  color: #cbd5e0;
+}
+
+/* Chatbot */
+#chatbot-icon {
+  position: fixed;
+  bottom: 25px;
+  right: 95px;
+  background: #007bff;
+  color: white;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 28px;
+  text-align: center;
+  line-height: 60px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  z-index: 1000;
+  transition: 0.3s;
+}
+
+#chatbot-icon:hover { 
+  background: #0056b3; 
+}
+
+#chatbot-window {
+  position: fixed;
+  bottom: 100px;
+  right: 25px;
+  width: 350px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 2000;
+}
+
+#chatbot-window.hidden { 
+  display: none; 
+}
+
+.chatbot-header {
+  background: #007bff;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chatbot-header span {
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.chatbot-messages {
+  padding: 10px;
+  height: 300px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+
+.user-msg {
+  text-align: right;
+  color: #007bff;
+  margin: 5px 0;
+}
+
+.bot-msg {
+  text-align: left;
+  color: #28a745;
+  margin: 5px 0;
+}
+
+#chatbot-input {
+  border: none;
+  border-top: 1px solid #ddd;
+  padding: 10px;
+  width: calc(100% - 60px);
+  outline: none;
+}
+
+#chatbot-send {
+  border: none;
+  background: #007bff;
+  color: white;
+  width: 60px;
+  cursor: pointer;
+}
+
+.bg-blue { background: linear-gradient(135deg, #667eea, #764ba2); }
+.bg-green { background: linear-gradient(135deg, #48bb78, #38a169); }
+.bg-orange { background: linear-gradient(135deg, #ed8936, #dd6b20); }
+.bg-purple { background: linear-gradient(135deg, #9f7aea, #805ad5); }
+.bg-red { background: linear-gradient(135deg, #f56565, #e53e3e); }
+.bg-teal { background: linear-gradient(135deg, #4fd1c5, #38b2ac); }
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .sidebar-nav {
+    width: 70px;
+  }
+
+  .sidebar-header h2 span {
+    display: none;
+  }
+
+  .sidebar-nav a span {
+    display: none;
+  }
+
+  .sidebar-nav a {
+    justify-content: center;
+    padding: 15px;
+  }
+
+  .main-wrapper {
+    margin-left: 70px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar-nav {
+    width: 100%;
+    height: auto;
+    position: relative;
+    flex-direction: row;
+    padding: 15px;
+    overflow-x: auto;
+  }
+
+  .sidebar-header {
+    display: none;
+  }
+
+  .sidebar-nav a {
+    margin: 0 5px;
+    min-width: 60px;
+  }
+
+  .main-wrapper {
+    margin-left: 0;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .hero-section h1 {
+    font-size: 2rem;
+  }
+}
+</style>
+</head>
+<body>
+  <div class="sidebar-nav">
+    <div class="sidebar-header">
+      <h2><i class="fas fa-store"></i> <span>VendorConnect</span></h2>
+    </div>
+    <a href="{% url 'listproducts' %}"><i class="fas fa-box"></i> <span>List Products</span></a>
+    <a href="{% url 'manageorders' %}"><i class="fas fa-shopping-cart"></i> <span>Manage Orders</span></a>
+    <a href="{% url 'analytics' %}"><i class="fas fa-chart-bar"></i> <span>Analytics</span></a>
+    <a href="{% url 'support' %}" class="active"><i class="fas fa-headset"></i> <span>Support</span></a>
+    <a href="{% url 'supplier_reviews' %}"><i class="fas fa-star"></i> <span>My Reviews</span></a>
+  </div>
+
+  <div class="main-wrapper">
+    <div class="top-banner">
+      <i class="fas fa-headset"></i> Need help? Our support team is here 24/7
+    </div>
+
+    <div class="container">
+      <div class="hero-section">
+        <h1>How can we help you today?</h1>
+        <p>Connect with our support team</p>
+      </div>
+
+      <div class="content-grid">
+        <div class="main-content">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon bg-blue">
+                <i class="fas fa-headset"></i>
+              </div>
+              <div>
+                <h2>Contact Support</h2>
+                <p style="color: #718096; font-size: 0.9rem;">Choose your preferred contact method</p>
+              </div>
+            </div>
+            <div class="contact-methods">
+              <div class="contact-method">
+                <div class="method-icon bg-purple">
+                  <i class="fas fa-comment-dots"></i>
+                </div>
+                <div class="method-content">
+                  <h3>Live Chat</h3>
+                  <p>Get instant help from our support team</p>
+                  <div class="method-meta">
+                    <span><i class="fas fa-circle" style="color: #48bb78;"></i> Online now</span>
+                    <span><i class="fas fa-clock"></i> ~2 min wait</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="contact-method">
+                <div class="method-icon bg-blue">
+                  <i class="fas fa-phone-alt"></i>
+                </div>
+                <div class="method-content">
+                  <h3>Phone Support</h3>
+                  <p>+91 98765 43210</p>
+                  <div class="method-meta">
+                    <span><i class="fas fa-clock"></i> Mon-Fri, 9 AM - 6 PM IST</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="contact-method">
+                <div class="method-icon bg-orange">
+                  <i class="fas fa-envelope"></i>
+                </div>
+                <div class="method-content">
+                  <h3>Email Support</h3>
+                  <p>vendorconnectweb@gmail.com</p>
+                  <div class="method-meta">
+                    <span><i class="fas fa-reply"></i> Response within 24-48 hours</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon bg-orange">
+                <i class="fas fa-question-circle"></i>
+              </div>
+              <div>
+                <h2>Frequently Asked Questions</h2>
+              </div>
+            </div>
+            <div class="faq-list">
+              <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                  <span>How do I reset my password?</span>
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                  Click on "Forgot Password" on the login page, enter your email, and follow the instructions sent to your inbox. If you don't receive the email within 5 minutes, check your spam folder.
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                  <span>When will I receive my payment?</span>
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                  Payments are processed within 3-5 business days after order completion. You'll receive a notification when the payment is initiated and another when it's credited to your account.
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                  <span>How do I list a new product?</span>
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                  Go to Dashboard > Products > Add New Product. Fill in all required fields including title, description, price, images, and inventory. Click "Publish" when ready.
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                  <span>What are the commission rates?</span>
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                  Commission rates vary by category: Electronics (5-8%), Fashion (10-15%), Home & Kitchen (8-12%). You can view detailed rates in your seller dashboard under "Pricing & Fees".
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                  <span>How do I handle returns and refunds?</span>
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                  Returns must be processed within 7 days of request. Go to Orders > Returns, review the request, and either approve or reject with a valid reason. Refunds are automatically processed upon approval.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar">
+          <div class="live-support">
+            <h3><i class="fas fa-comments"></i> Live Chat Support</h3>
+            <p>Chat with our support team in real-time</p>
+            <div class="agent-status">
+              
+              
+            
+            <button class="btn-chat" onclick="openChat()">
+              <i class="fas fa-comment-dots"></i> Start Chat Now
+            </button>
+          </div>
+
+          <div class="card">
+            <h3><i class="fas fa-clock"></i> Support Hours</h3>
+            <div style="padding: 15px 0;">
+              <div style="margin-bottom: 15px;">
+                <strong style="color: #2d3748;">Live Chat & Phone</strong>
+                <p style="color: #718096; font-size: 0.9rem; margin-top: 5px;">Mon-Fri: 9 AM - 6 PM IST</p>
+              </div>
+              <div>
+                <strong style="color: #2d3748;">Email Support</strong>
+                <p style="color: #718096; font-size: 0.9rem; margin-top: 5px;">24/7 (48hr response)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% comment %} 
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>VendorConnect</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="#">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">System Status</a></li>
+            <li><a href="#">Report an Issue</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">API Reference</a></li>
+            <li><a href="#">Developer Portal</a></li>
+            <li><a href="#">Community Forum</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Cookie Policy</a></li>
+            <li><a href="#">Seller Agreement</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 VendorConnect. All rights reserved.</p>
+      </div>
+    </footer>
+  </div> {% endcomment %}
+
+  <!-- Chatbot Icon -->
+  <div id="chatbot-icon">💬</div>
+
+  <div id="chatbot-window" class="hidden">
+    <div class="chatbot-header">
+      VendorConnect AI Assistant
+      <span id="chatbot-close">&times;</span>
+    </div>
+    <div class="chatbot-messages" id="chatbot-messages"></div>
+    <input type="text" id="chatbot-input" placeholder="Ask me anything..." />
+    <button id="chatbot-send">Send</button>
+  </div>
+
+<script>
+function toggleFAQ(element) {
+  const faqItem = element.parentElement;
+  const isActive = faqItem.classList.contains('active');
+  
+  // Close all FAQs
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.classList.remove('active');
+  });
+  
+  // Open clicked FAQ if it wasn't active
+  if (!isActive) {
+    faqItem.classList.add('active');
+  }
+}
+
+function openChat() {
+  alert('Chat functionality would open here. This would typically launch a live chat widget or redirect to a chat interface.');
+}
+
+(() => {
+  const icon = document.getElementById("chatbot-icon");
+  const windowBox = document.getElementById("chatbot-window");
+  const closeBtn = document.getElementById("chatbot-close");
+  const sendBtn = document.getElementById("chatbot-send");
+  const input = document.getElementById("chatbot-input");
+  const aiMessages = document.getElementById("chatbot-messages");
+
+  icon.addEventListener("click", () => windowBox.classList.toggle("hidden"));
+  closeBtn.addEventListener("click", () => windowBox.classList.add("hidden"));
+
+  sendBtn.addEventListener("click", sendMessage);
+  input.addEventListener("keypress", (e) => { if (e.key === "Enter") sendMessage(); });
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    appendMessage("user", text);
+    input.value = "";
+
+    const response = await fetch("/chatbot/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message: text, user_type: "supplier" })
+    });
+
+    const data = await response.json();
+    appendMessage("bot", data.reply || "Error connecting to AI.");
+  }
+
+  function appendMessage(sender, text) {
+    const div = document.createElement("div");
+    div.className = sender === "user" ? "user-msg" : "bot-msg";
+    div.innerHTML = `<b>${sender === "user" ? "You" : "Bot"}:</b> ${text}`;
+    aiMessages.appendChild(div);
+    aiMessages.scrollTop = aiMessages.scrollHeight;
+  }
+})();
+</script>
+
+</body>
+</html>
