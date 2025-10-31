@@ -38,15 +38,15 @@ India’s street food vendors struggle with:
 ## 🛠 Tech Stack
 
 - **Frontend**: HTML, CSS, JavaScript  
-- **Backend**: Coming Soon 
-- **API**: (Optional future) Google Maps API for location-based supplier discovery  
-- **Hosting**: GitHub Pages / Vercel / Netlify
+- **Backend**: Django + Django API's
+- **API**:  Maps API for location-based supplier discovery  
+- **Hosting**: Railway
 
 ---
 
 ## 🚀 Getting Started
 
-### Clone the Repository
+
 
 
 
