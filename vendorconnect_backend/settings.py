@@ -200,13 +200,13 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'vendorconnectweb@gmail.com'
-EMAIL_HOST_PASSWORD = 'dnjl ggyh hnfh fpbk'  # From Google App Passwords
-DEFAULT_FROM_EMAIL = 'vendorconnectweb@gmail.com'
+EMAIL_HOST_USER = 'your-mail'
+EMAIL_HOST_PASSWORD = 'your-mail-app-password'  # From Google App Passwords
+DEFAULT_FROM_EMAIL = 'your-mail'
 EMAIL_TIMEOUT = 120  # ADD THIS - set a reasonable timeout
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1013464190681-ptkqjpjqh7v440t5fnv5aou116fmtb80.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'your-client-key'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'your-client-secret'
 LOGIN_REDIRECT_URL = '/accounts/google-redirect/'
 LOGOUT_REDIRECT_URL = '/'
 SOCIAL_AUTH_PIPELINE = (
@@ -234,5 +234,5 @@ CHANNEL_LAYERS = {
     }
 }
 # Razorpay test credentials (development only)
-RAZORPAY_KEY_ID = 'rzp_test_RVOFnpoMSqmYhO'
-RAZORPAY_KEY_SECRET = 'ksZf3comxTg7Jig4rLGgzfxS'
+RAZORPAY_KEY_ID = 'your-razorpay-client-id'
+RAZORPAY_KEY_SECRET = 'your-razorpay-client-secret'
