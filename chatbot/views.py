@@ -7,7 +7,7 @@ from openai import OpenAI, OpenAIError
 # import os
 # client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-client = OpenAI(api_key="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")  # 🔒 Replace with your actual API key
+client = OpenAI(api_key="your_open_ai_key")  # 🔒 Replace with your actual API key
 
 @csrf_exempt
 def chat_with_ai(request):
