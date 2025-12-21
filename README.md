@@ -62,4 +62,5 @@ To build a transparent, technology-driven, and inclusive digital marketplace tha
 
 ## Repository
 Demo Link : https://drive.google.com/file/d/1J_paaNMBf6qVHG-UM-G75Ff-BOwu0HX6/view?usp=sharing
+<br>
 GitHub: [https://github.com/Team-Collabration/vendorconnect.git](https://github.com/Team-Collabration/vendorconnect.git)
