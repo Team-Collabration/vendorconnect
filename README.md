@@ -61,5 +61,5 @@ VendorConnect addresses these issues by digitizing and automating the supply cha
 To build a transparent, technology-driven, and inclusive digital marketplace that empowers local vendors, simplifies sourcing, and strengthens India’s street food supply chain ecosystem.
 
 ## Repository
-
+Demo Link : https://drive.google.com/file/d/1J_paaNMBf6qVHG-UM-G75Ff-BOwu0HX6/view?usp=sharing
 GitHub: [https://github.com/Team-Collabration/vendorconnect.git](https://github.com/Team-Collabration/vendorconnect.git)
