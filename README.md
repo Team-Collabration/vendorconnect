@@ -27,6 +27,7 @@ It digitizes the procurement process — from discovery and comparison to order 
 * **Direct Communication** – Use built-in chat to communicate directly with vendors for quotations or clarifications.
 * **Delivery Zone Management** – Define delivery regions using map-based zone selection tools.
 * **Vendor Notifications** – Get notified instantly when vendors make inquiries or place new orders.
+* ** AI Based Market Demand prediction of a particular product** 
 
 ## Real-World Challenges Addressed
 
@@ -53,7 +54,6 @@ VendorConnect addresses these issues by digitizing and automating the supply cha
 
 * **AI-Powered Vendor–Supplier Matching** – Personalized recommendations based on pricing, reliability, and historical data.
 * **Multi-Language and Multi-Currency Support** – Expanding accessibility across regions and markets.
-* **Advanced Analytics Dashboard** – Providing insights into sales trends, supplier performance, and financial metrics.
 * **Collaborative Bulk Ordering** – Allowing vendors to form groups for shared purchasing and collective discounts.
 
 ## Vision
